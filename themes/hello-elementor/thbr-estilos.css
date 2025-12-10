@@ -1,0 +1,510 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap');
+
+/* ============================
+   Tipografía y base institucional
+   ============================ */
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fff;
+    color: #0056B3;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    font-weight: 700;
+    font-size: 24px;
+}
+
+/* ============================
+   Botones institucionales compartidos
+   ============================ */
+.thbr-btn {
+  color: #0056B3;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  text-decoration: none !important;
+  border: 2px solid #0056B3;
+  border-radius: 8px;
+  padding: 10px 20px;
+  background-color: transparent;
+  margin: 10px;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.thbr-btn:hover {
+  background-color: #E6F0FF;
+}
+
+/* ============================
+   Formularios institucionales
+   ============================ */
+
+.thbr-contrato {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.thbr-contrato h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+.thbr-form {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  width: 100%;
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 0 8px;
+}
+
+.thbr-form fieldset {
+  border: none;
+  padding: 0;
+  margin: 0 auto 0px auto;
+  width: 100%;
+  max-width: 360px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.thbr-legend {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 16px auto;
+  text-align: left;
+}
+
+.thbr-legend legend {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #0056B3;
+  padding: 0;
+  margin: 0;
+}
+
+.thbr-campo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 16px auto;
+  text-align: left;
+}
+
+.thbr-campo input,
+.thbr-campo select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.thbr-campo label,
+.thbr-fila label {
+  text-align:left;
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 6px;
+  
+}
+
+/* Radios de moneda y reajuste */
+.thbr-moneda {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin: 8px 0;
+}
+
+.thbr-moneda label {
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Botón institucional */
+.thbr-form button {
+  background-color: #0056B3;
+  color: white;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: 500;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  margin: 40px auto 0;
+}
+
+.thbr-form button:hover {
+  background-color: #004080;
+  color: #ffffff;
+}
+
+
+/* ============================
+   Ajuste para campos en doble columna
+   ============================ */
+
+.thbr-doble {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.thbr-doble input {
+  flex: 1;
+  max-width: 150px;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+.thbr-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 320px;
+  margin: 0 auto 8px auto;
+}
+
+.thbr-fila label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.thbr-opciones {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.thbr-opciones label {
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.thbr-opciones select {
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.thbr-doble-label {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.thbr-fecha {
+  display: flex;
+  flex-direction: column;
+  max-width: 150px;
+}
+
+.thbr-fecha label {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.thbr-fecha input[type="date"] {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
+
+
+
+
+/* ============================
+   Mensajes de feedback
+   ============================ */
+.thbr-exito {
+    color: green;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.thbr-error {
+    color: red;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+/* ============================
+   INICIO
+   ============================ */
+
+.thbr-intro {
+  color: #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.thbr-home {
+    text-align: center;
+    padding: 40px;
+}
+
+.thbr-home img {
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+/* ============================
+   PANEL
+   ============================ */
+.thbr-panel {
+    padding: 40px;
+    text-align: center;
+}
+
+.thbr-panel img {
+    max-width: 300px;
+    margin-bottom: 40px;
+}
+
+.thbr-dashboard .grupo-botones {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+/* ============================
+   REGISTRO DE USUARIO
+   ============================ */
+.thbr-registro {
+    text-align: center;
+    padding: 40px;
+}
+
+.thbr-registro img {
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+.thbr-registro h2 {
+  color: #000000; /* negro */
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  margin-bottom: 30px;
+}
+
+/* Botón institucional de registro */
+
+.thbr-registro .thbr-boton-registro {
+  background-color: #0073aa;
+  color: #ffffff;
+  font-weight: 600;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 640px;
+  max-width: 320px;
+  transition: background-color 0.3s ease;
+}
+
+.thbr-registro .thbr-boton-registro:hover {
+  background-color: #005f8d;
+}
+
+
+.thbr-registro .enlace-ingreso {
+  color: #004080; 
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.thbr-registro .enlace-ingreso:hover {
+  text-decoration: underline;
+}
+
+
+/* ============================
+   INICIO DE SESIÓN
+   ============================ */
+
+.thbr-ingreso form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* fuerza centrado horizontal */
+}
+
+
+.thbr-ingreso {
+    text-align: center;
+    padding: 10px;
+}
+
+.thbr-ingreso img {
+    max-width: 300px;
+    
+}
+
+.thbr-ingreso h2 {
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #0056B3;
+}
+
+/* Botón específico con clase institucional */
+.thbr-ingreso .thbr-boton-ingreso {
+  background-color: #ffffff;
+  color: #004080;
+  font-weight: 600;
+  font-size: 24px;
+  padding: 20px 20px;
+  border: 4px solid #004080;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+  margin: 0 auto;
+  display: block;
+}
+
+.thbr-ingreso .thbr-boton-ingreso:hover {
+  background-color: #004080;
+  color: #ffffff;
+}
+
+
+/* Ocultar títulos automáticos */
+.page-title,
+.entry-title {
+    display: none !important;
+}
+
+/* ============================
+   Corrección visual de formularios
+   ============================ */
+
+.thbr-ingreso label,
+.thbr-registro label {
+  display: block;
+  text-align: left;
+  margin: 12px 0 4px 0;
+  max-width: 320px;
+  font-weight: 600;
+  color: #004080;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.thbr-ingreso input,
+.thbr-registro input {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: block;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.thbr-ingreso input::placeholder,
+.thbr-registro input::placeholder {
+  font-size: 14px;
+  color: #999;
+  font-weight: 400;
+}
+
+
+
+/* ============================
+   Historial de Contratos
+   ============================ */
+
+.thbr-historial {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.thbr-historial h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.thbr-tabla {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.thbr-tabla th,
+.thbr-tabla td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.thbr-tabla th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+/* Colores por estado de vencimiento */
+.estado-verde { background-color: #d4edda; }     /* >45 días */
+.estado-amarillo { background-color: #fff3cd; }  /* <=45 días */
+.estado-naranja { background-color: #ffe5b4; }   /* <=30 días */
+.estado-rojo { background-color: #f8d7da; }      /* <=15 días */
+.estado-vencido { background-color: #e2e3e5; }   /* vencido */
+
+/* Acciones con iconos */
+.thbr-acciones {
+  display: flex;
+  gap: 10px;
+}
+
+.thbr-acciones img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}

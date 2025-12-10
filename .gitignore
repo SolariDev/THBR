@@ -1,0 +1,22 @@
+# Ignorar subidas de medios y cachés
+uploads/
+upgrade/
+languages/
+cache/
+
+# Archivos temporales y del sistema
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# Configuraciones locales de IDE/editores
+.vscode/
+.idea/
+
+# Dependencias y entornos
+node_modules/
+.env
+
