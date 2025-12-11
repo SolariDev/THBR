@@ -39,6 +39,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
 }
 ?>
 
+<div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 40px;">
+  <!-- Botones a la izquierda -->
+  <div>
+    <a href="<?php echo home_url('/panel'); ?>" 
+       style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #2c3e50;">
+       ⚙️ Panel
+
+
+    </a>
+    <a href="<?php echo home_url('/historial'); ?>" 
+       style="font-weight: 600; text-decoration: none; color: #2c3e50;">
+       📑 Historial
+
+    </a>
+  </div>
+
+  <!-- Usuario activo a la derecha -->
+  <div style="font-weight: 600; color: #2c3e50;">
+    Usuario: <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
+  </div>
+</div>
+
 <div class="thbr-contrato">
   <h2>Nuevo Contrato</h2>
 
