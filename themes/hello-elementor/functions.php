@@ -237,6 +237,12 @@ if ( ! function_exists( 'hello_elementor_customizer' ) ) {
 }
 add_action( 'init', 'hello_elementor_customizer' );
 
+// 🔒 Iniciar sesión global en WordPress
+add_action('init', function() {
+    if (!session_id()) {
+        session_start();
+    }
+});
 
 /**
  * BC:

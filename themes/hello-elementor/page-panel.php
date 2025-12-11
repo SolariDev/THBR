@@ -27,10 +27,25 @@ $usuario = $_SESSION['thbr_usuario'];
   <!-- Botones institucionales -->
    <div class="btn-grupo">
     <a href="<?php echo home_url('/nuevocontrato'); ?>" class="thbr-btn">Nuevo contrato</a>
-    <a href="<?php echo home_url('/historial'); ?>" class="thbr-btn">Historial</a>
-    <a href="<?php echo home_url('/inicio'); ?>" class="thbr-btn">Volver al inicio</a>
+    <a href="<?php echo home_url('/historial'); ?>" class="thbr-btn">Historial</a>    
   </div>
 </div>
+
+<div style="position: absolute; bottom: 30px; left: 30px;">
+  <a href="<?php echo get_template_directory_uri(); ?>/cerrarsesion.php" 
+     style="display: inline-block; font-size: 1rem; font-weight: 600; color: #fff; text-decoration: none; 
+            background-color: #2c3e50; /* azul institucional oscuro */
+            padding: 10px 18px; border-radius: 6px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2); 
+            transition: background-color 0.2s ease;"
+     onmouseover="this.style.backgroundColor='#34495e'" 
+     onmouseout="this.style.backgroundColor='#2c3e50'">
+     🔒 Cerrar sesión
+  </a>
+</div>
+
+
+
 
 <?php 
 get_footer();
