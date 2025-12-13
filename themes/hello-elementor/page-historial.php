@@ -10,6 +10,18 @@ $usuario = $_SESSION['thbr_usuario'] ?? null;
 if ($usuario) {
   global $wpdb;
   $tabla = $wpdb->prefix . 'thbr_contratos';
+
+if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id'])) {
+      $id = intval($_GET['id']);
+      $resultado = $wpdb->delete($tabla, ['id' => $id]);
+
+      if ($resultado !== false) {
+          echo "<div class='thbr-exito'>Contrato con ID $id eliminado correctamente.</div>";
+      } else {
+          echo "<div class='thbr-error'>No se pudo eliminar el contrato con ID $id.</div>";
+      }
+  }
+
   $contratos = $wpdb->get_results(
     $wpdb->prepare("SELECT * FROM $tabla WHERE id_usuario = %d ORDER BY fin ASC", $usuario['id'])
   );
@@ -100,9 +112,12 @@ if ($usuario) {
                   <img src="<?php echo esc_url( content_url('plugins/thbr/assets/edit.png') ); ?>" 
                     alt="Editar" style="width:20px;">
                 </a>
-                <a href="#" onclick="return false;">
-                  <img src="<?php echo esc_url( content_url('plugins/thbr/assets/eliminarcontrato.png') ); ?>" alt="Eliminar" style="width:20px;">
-                </a>
+                <a href="?accion=eliminar&id=<?php echo intval($c->id); ?>"
+                    onclick="return confirm('❌ ¿Querés eliminar el contrato  <?php echo addslashes($c->id);?> ?');"
+                    class="thbr-eliminar" title="Eliminar contrato">
+                    <img src="<?php echo esc_url( content_url('plugins/thbr/assets/eliminarcontrato.png') ); ?>" alt="Eliminar" style="width:20px;">
+                  </a>
+
               </div>
             </td>
           </tr>

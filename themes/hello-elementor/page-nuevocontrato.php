@@ -35,8 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     'fecha_creacion' => current_time('mysql')
   ];
 
-  $wpdb->insert($tabla, $datos);
-  echo "<div class='thbr-exito'>Contrato registrado correctamente.</div>";
+  $resultado = $wpdb->insert($tabla, $datos);
+
+  if ($resultado !== false){
+    echo "<div class='thbr-exito'>Contrato registrado correctamente.</div>";
+  } else {
+    echo "<div class='thbr-error'>Error al registrar el contrato: " . esc_html($wpdb->last_error) . "</div>";
+  }
+  
 }
 ?>
 
