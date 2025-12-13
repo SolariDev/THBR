@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     'precio_alquiler' => isset($_POST['precio_alquiler']) ? floatval($_POST['precio_alquiler']) : null,
     'moneda'         => sanitize_text_field($_POST['moneda'] ?? ''), 
     'garantia'       => sanitize_text_field($_POST['garantia'] ?? ''),
+    'tiempo_contrato' => sanitize_text_field($_POST['tiempo_contrato'] ?? ''),
     'inicio'         => sanitize_text_field($_POST['inicio'] ?? ''),
     'fin'            => sanitize_text_field($_POST['fin'] ?? ''),
     'link_drive'     => esc_url_raw($_POST['link_drive'] ?? ''),
@@ -122,6 +123,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     <input type="number" id="precio_alquiler" name="precio_alquiler" step="0.01" value="0.00" required>
   </div>
 
+  <!-- Tipo de reajuste -->
+  <div class="thbr-fila">
+    <label for="tipo_reajuste">Tipo de reajuste</label>
+    <div class="thbr-opciones">
+      <label><input type="radio" name="tipo_reajuste" value="IPC" required> IPC</label>
+      <label><input type="radio" name="tipo_reajuste" value="URA"> URA</label>
+    </div>
+  </div>
+
   <!-- Garantía -->
   <div class="thbr-campo">
     <label for="garantia">Garantía</label>
@@ -162,14 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     <input type="url" id="link_drive" name="link_drive" placeholder="https://...">
   </div>
 
-  <!-- Tipo de reajuste -->
-  <div class="thbr-fila">
-    <label for="tipo_reajuste">Tipo de reajuste</label>
-    <div class="thbr-opciones">
-      <label><input type="radio" name="tipo_reajuste" value="IPC" required> IPC</label>
-      <label><input type="radio" name="tipo_reajuste" value="URA"> URA</label>
-    </div>
-  </div>
+  
 </fieldset>    
 
     <!-- Botón -->

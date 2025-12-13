@@ -16,6 +16,22 @@ if ($usuario) {
 }
 ?>
 
+<div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 40px;">
+  <!-- Botones a la izquierda -->
+  <div>
+    <a href="<?php echo home_url('/panel'); ?>" 
+       style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #2c3e50;">
+       ⚙️ Panel
+    </a>
+  </div>
+
+  <!-- Usuario activo a la derecha -->
+  <div style="font-weight: 600; color: #2c3e50;">
+    Usuario: <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
+  </div>
+</div>
+
+
 <div class="thbr-historial">
   <h2>Historial de Contratos</h2>
 
@@ -64,13 +80,12 @@ if ($usuario) {
 
           // Monto y moneda
           $monto = '';
-          if (!empty($c->precio_pesos)) {
-            $monto = $c->precio_pesos . " Pesos";
-          } elseif (!empty($c->precio_dolares)) {
-            $monto = $c->precio_dolares . " USD";
+          if (!empty($c->precio_alquiler) && !empty($c->moneda)) {
+            $monto = $c->precio_alquiler . ' ' . $c-> moneda;
           }
+
         ?>
-          <tr class="estado-<?php echo $color; ?>">
+          <tr class="estado-<?php echo esc_attr($color); ?>">
             <td><?php echo esc_html($c->id); ?></td>
             <td><?php echo esc_html($direccionCompleta); ?></td>
             <td><?php echo esc_html($c->prop_nombre . ' ' . $c->prop_apellido); ?></td>
@@ -81,11 +96,12 @@ if ($usuario) {
             <td><?php echo esc_html($c->fin); ?></td>
             <td>
               <div class="thbr-acciones">
-                <a href="<?php echo site_url('/editar-contrato?id=' . $c->id); ?>">
-                  <img src="<?php echo get_template_directory_uri(); ?>/thbr/assets/editar.png" alt="Editar">
+                <a href="<?php echo site_url('/editarcontrato?id=' . $c->id); ?>">
+                  <img src="<?php echo esc_url( content_url('plugins/thbr/assets/edit.png') ); ?>" 
+                    alt="Editar" style="width:20px;">
                 </a>
-                <a href="<?php echo site_url('/eliminar-contrato?id=' . $c->id); ?>" onclick="return confirm('¿Seguro que deseas eliminar este contrato?');">
-                  <img src="<?php echo get_template_directory_uri(); ?>/thbr/assets/eliminarcontrato.png" alt="Eliminar">
+                <a href="#" onclick="return false;">
+                  <img src="<?php echo esc_url( content_url('plugins/thbr/assets/eliminarcontrato.png') ); ?>" alt="Eliminar" style="width:20px;">
                 </a>
               </div>
             </td>
