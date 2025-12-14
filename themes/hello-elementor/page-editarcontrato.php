@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     'precio_alquiler' => isset($_POST['precio_alquiler']) ? floatval($_POST['precio_alquiler']) : null,
     'moneda'          => sanitize_text_field($_POST['moneda'] ?? ''),
     'garantia'        => sanitize_text_field($_POST['garantia'] ?? ''),
+    'tiempo_contrato' => sanitize_text_field($_POST['tiempo_contrato'] ?? ''),
     'inicio'          => sanitize_text_field($_POST['inicio'] ?? ''),
     'fin'             => sanitize_text_field($_POST['fin'] ?? ''),
     'link_drive'      => esc_url_raw($_POST['link_drive'] ?? ''),

@@ -126,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     </div>
   </div>
   <div class="thbr-campo">
-    <input type="number" id="precio_alquiler" name="precio_alquiler" step="0.01" value="0.00" required>
+    <input type="number" id="precio_alquiler" name="precio_alquiler" step="1" min="0" value="0" required>
   </div>
 
   <!-- Tipo de reajuste -->

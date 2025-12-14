@@ -56,6 +56,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
           <th>Propietario</th>
           <th>Inquilino</th>
           <th>Monto</th>
+          <th>Reajuste</th>
           <th>Garantía</th>
           <th>Inicio</th>
           <th>Fin</th>
@@ -70,16 +71,25 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
           $color = '';
 
           if ($fin < $hoy) {
-            $color = 'vencido';
-          } elseif ($diff > 45) {
-            $color = 'verde';
-          } elseif ($diff <= 45 && $diff > 30) {
-            $color = 'amarillo';
-          } elseif ($diff <= 30 && $diff > 15) {
-            $color = 'naranja';
-          } elseif ($diff <= 15) {
             $color = 'rojo';
-          }
+          } elseif ($diff <= 90) {
+            $color = 'amarillo';
+          } else {
+            $color = 'verde';
+          } 
+
+          // Definir estilo inline según color
+          $estilo = '';
+          if ($color === 'rojo') {
+            $estilo = 'background-color:#d50000;
+            color:#fff;';
+          } elseif ($color === 'amarillo') {
+            $estilo = 'background-color:#ffc107;
+            color:#000;';
+          } elseif ($color === 'verde') {
+            $estilo = 'background-color:#2e7d32;
+            color:#fff;';
+          } 
 
           // Dirección completa con apto y garage si existen
           $direccionCompleta = $c->direccion;
@@ -97,12 +107,13 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
           }
 
         ?>
-          <tr class="estado-<?php echo esc_attr($color); ?>">
+          <tr style="<?php echo $estilo; ?>">
             <td><?php echo esc_html($c->id); ?></td>
             <td><?php echo esc_html($direccionCompleta); ?></td>
             <td><?php echo esc_html($c->prop_nombre . ' ' . $c->prop_apellido); ?></td>
             <td><?php echo esc_html($c->inq_nombre . ' ' . $c->inq_apellido); ?></td>
             <td><?php echo esc_html($monto); ?></td>
+            <td><?php echo esc_html($c->tipo_reajuste); ?></td>
             <td><?php echo esc_html($c->garantia); ?></td>
             <td><?php echo esc_html($c->inicio); ?></td>
             <td><?php echo esc_html($c->fin); ?></td>
