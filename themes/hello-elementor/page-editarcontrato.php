@@ -30,6 +30,9 @@ if (!$contrato) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+  $link_drive = !empty($_POST['link_drive']) ? filter_var($_POST['link_drive'], FILTER_VALIDATE_URL) : '';
+
   $datos = [
     'direccion'       => sanitize_text_field($_POST['direccion'] ?? ''),
     'apartamento'     => sanitize_text_field($_POST['apartamento'] ?? ''),
@@ -48,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     'tiempo_contrato' => sanitize_text_field($_POST['tiempo_contrato'] ?? ''),
     'inicio'          => sanitize_text_field($_POST['inicio'] ?? ''),
     'fin'             => sanitize_text_field($_POST['fin'] ?? ''),
-    'link_drive'      => esc_url_raw($_POST['link_drive'] ?? ''),
+    'link_drive'      => $link_drive ? esc_url_raw($link_drive) : '',
     'tipo_reajuste'   => sanitize_text_field($_POST['tipo_reajuste'] ?? '')
   ];
 
@@ -187,11 +190,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="url" name="link_drive" 
            placeholder="https://..."
            value="<?php echo esc_attr($contrato->link_drive ?? ''); ?>">
-  </div>
 
+    <?php if (!empty($contrato->link_drive)): ?>
+    <p>
+      <a href="<?php echo esc_url($contrato->link_drive); ?>" target="_blank" rel="noopener noreferrer">
+        🔗 Abrir carpeta en Drive
+      </a>
+    </p>
+    <?php endif; ?>
+
+  </div>
   
 </fieldset>
-
     
      <button type="submit">Guardar cambios</button>
   </form>

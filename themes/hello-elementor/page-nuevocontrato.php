@@ -11,6 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
   global $wpdb;
   $tabla = $wpdb->prefix . 'thbr_contratos';
 
+  $link_drive = !empty($_POST['link_drive']) ? filter_var($_POST['link_drive'], FILTER_VALIDATE_URL) : ''; 
+
   $datos = [
     'id_usuario'     => intval($usuario['id']),
     'direccion'      => sanitize_text_field($_POST['direccion'] ?? ''),
@@ -30,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     'tiempo_contrato' => sanitize_text_field($_POST['tiempo_contrato'] ?? ''),
     'inicio'         => sanitize_text_field($_POST['inicio'] ?? ''),
     'fin'            => sanitize_text_field($_POST['fin'] ?? ''),
-    'link_drive'     => esc_url_raw($_POST['link_drive'] ?? ''),
+    'link_drive'     => $link_drive ? esc_url_raw($link_drive) : '',
     'tipo_reajuste'  => sanitize_text_field($_POST['tipo_reajuste'] ?? ''),
     'fecha_creacion' => current_time('mysql')
   ];
@@ -175,7 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
   <!-- Link de carpeta Drive -->
   <div class="thbr-campo">
     <label for="link_drive">Link de carpeta Drive</label>
-    <input type="url" id="link_drive" name="link_drive" placeholder="https://...">
+    <input type="url" id="link_drive" name="link_drive" placeholder="https://..." required>
   </div>
 
   
@@ -187,6 +189,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
 </div>
 
 <?php get_footer(); ?>
-
-
-

@@ -115,8 +115,9 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
             <td><?php echo esc_html($monto); ?></td>
             <td><?php echo esc_html($c->tipo_reajuste); ?></td>
             <td><?php echo esc_html($c->garantia); ?></td>
-            <td><?php echo esc_html($c->inicio); ?></td>
-            <td><?php echo esc_html($c->fin); ?></td>
+            <td><?php echo date('d/m/Y', strtotime($c->inicio)); ?></td>
+            <td><?php echo date('d/m/Y', strtotime($c->fin)); ?></td>
+
             <td>
               <div class="thbr-acciones">
                 <a href="<?php echo site_url('/editarcontrato?id=' . $c->id); ?>">
