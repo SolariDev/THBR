@@ -21,14 +21,16 @@ $usuario = $_SESSION['thbr_usuario'];
     Bienvenido, <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
   </div>
 
-  <!-- Logo institucional -->
-  <img src="<?php echo plugins_url( 'assets/logobrthbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" />
+  <!-- Bloque centrado: Logo y botones -->
+   <div class="thbr-botones-centrados">
+    <img src="<?php echo plugins_url( 'assets/logobrthbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" />
 
-  <!-- Botones institucionales -->
-   <div class="btn-grupo">
+   <div class="grupo-botones">
     <a href="<?php echo home_url('/nuevocontrato'); ?>" class="thbr-btn">Nuevo contrato</a>
     <a href="<?php echo home_url('/historial'); ?>" class="thbr-btn">Historial</a>    
   </div>
+</div>
+
 </div>
 
 <div style="position: absolute; bottom: 30px; left: 30px;">
@@ -43,9 +45,6 @@ $usuario = $_SESSION['thbr_usuario'];
      🔒 Cerrar sesión
   </a>
 </div>
-
-
-
 
 <?php 
 get_footer();

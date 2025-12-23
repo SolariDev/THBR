@@ -289,17 +289,38 @@ h2 {
 .thbr-panel {
     padding: 40px;
     text-align: center;
+    position: relative;
 }
 
-.thbr-panel img {
-    max-width: 300px;
-    margin-bottom: 40px;
+.thbr-botones-centrados {
+  min-height: calc(100vh - 80px);              
+  display: flex;
+  flex-direction: column;     
+  justify-content: center;    
+  align-items: center;
+  text-align: center;       
+  gap: 40px;
+  box-sizing: border-box;                 
 }
 
-.thbr-dashboard .grupo-botones {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
+.thbr-botones-centrados img {
+    max-width: 360px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.thbr-botones-centrados .grupo-botones {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+    width: 360;
+    margin: 0 auto;
+    transform: translateX(-6px);
+}
+
+.thbr-botones-centrados .grupo-botones .thbr-btn {
+  width: 100%;
+  text-align: center;
 }
 
 /* ============================

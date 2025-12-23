@@ -38,14 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   <!-- Logo institucional -->
   <img src="<?php echo plugins_url( 'assets/logobrthbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" />
-
-  <h2>Iniciá sesión</h2>
-
+  
 <!-- Formulario de ingreso -->
   <form method="post" autocomplete="off">
-    <input type="email" id="correo" name="correo" required placeholder="Correo electrónico" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"><br>
+    <input type="email" id="correo" name="correo" required placeholder="Correo electrónico" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
 
-    <input type="password" id="password" name="password" required placeholder="Contraseña" autocomplete="new-password" autocorrect="off" autocapitalize="none" spellcheck="false"><br>
+    <input type="password" id="password" name="password" required placeholder="Contraseña" autocomplete="new-password" autocorrect="off" autocapitalize="none" spellcheck="false">
 
     <button type="submit" class="thbr-boton-ingreso">Iniciar sesión</button>
   </form>

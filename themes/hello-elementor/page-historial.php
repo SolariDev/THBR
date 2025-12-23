@@ -81,13 +81,13 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
           // Definir estilo inline según color
           $estilo = '';
           if ($color === 'rojo') {
-            $estilo = 'background-color:#d50000;
+            $estilo = 'background-color:#C85C5C;
             color:#fff;';
           } elseif ($color === 'amarillo') {
-            $estilo = 'background-color:#ffc107;
+            $estilo = 'background-color:#E6B84A;
             color:#000;';
           } elseif ($color === 'verde') {
-            $estilo = 'background-color:#2e7d32;
+            $estilo = 'background-color:#6DAE4F;
             color:#fff;';
           } 
 
