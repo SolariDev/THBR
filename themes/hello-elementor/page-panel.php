@@ -13,11 +13,12 @@ if (!isset($_SESSION['thbr_usuario'])) {
 }
 
 $usuario = $_SESSION['thbr_usuario'];
+session_write_close();
 ?>
 
 <div class="thbr-panel">
 
-  <div style="position: absolute; top: 50px; right: 30px; font-size: 1rem; color: #333; font-weight: 500;">
+  <div style="position: absolute; top: 50px; right: 30px; font-size: 1rem; color: #1c35a5ff; font-weight: 500;">
     Bienvenido, <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
   </div>
 

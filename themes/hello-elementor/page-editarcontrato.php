@@ -8,6 +8,8 @@ session_start();
 $usuario = $_SESSION['thbr_usuario'] ?? null;
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
+session_write_close();
+
 if (!$usuario || !$id) {
   echo "<div class='thbr-error'>Acceso no autorizado.</div>";
   get_footer();
@@ -34,7 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $link_drive = !empty($_POST['link_drive']) ? filter_var($_POST['link_drive'], FILTER_VALIDATE_URL) : '';
 
   $datos = [
-    'direccion'       => sanitize_text_field($_POST['direccion'] ?? ''),
+    'calle' => sanitize_text_field($_POST['calle'] ?? ''), 
+    'numero' => sanitize_text_field($_POST['numero'] ?? ''),
+    'manzana' => sanitize_text_field($_POST['manzana'] ?? ''),
+    'solar' => sanitize_text_field($_POST['solar'] ?? ''),
+    'barrio' => sanitize_text_field($_POST['barrio'] ?? ''),
+    'departamento' => sanitize_text_field($_POST['departamento'] ?? ''),
     'apartamento'     => sanitize_text_field($_POST['apartamento'] ?? ''),
     'garage'          => sanitize_text_field($_POST['garage'] ?? ''),
     'prop_nombre'     => sanitize_text_field($_POST['prop_nombre'] ?? ''),
@@ -66,13 +73,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <!-- Botones a la izquierda -->
   <div>
     <a href="<?php echo home_url('/panel'); ?>" 
-       style="margin-right:12px;font-weight:600;text-decoration:none;color:#2c3e50;">⚙️ Panel</a>
+       style="margin-right:12px;font-weight:600;text-decoration:none;color: #1c35a5ff;">⚙️ Panel</a>
     <a href="<?php echo home_url('/historial'); ?>" 
-       style="font-weight:600;text-decoration:none;color:#2c3e50;">📂 Historial</a>
+       style="font-weight:600;text-decoration:none;color: #1c35a5ff;">📂 Historial</a>
   </div>
 
   <!-- Usuario activo a la derecha -->
-  <div style="font-weight:600;color:#2c3e50;">
+  <div style="font-weight:600;color: #1c35a5ff;">
     Usuario: <?php echo esc_html($usuario['nombre'].' '.$usuario['apellido']); ?>
   </div>
 </div>
@@ -81,58 +88,124 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <h2>Editar Contrato</h2>
 
   <form method="post" class="thbr-form" autocomplete="off">
+
     <!-- Propiedad -->
-    <fieldset>
-      <div class="thbr-legend"><legend>Propiedad</legend></div>
+   
+  <fieldset>
+    <div class="thbr-legend"><legend>Propiedad</legend></div>
+
+    <div class="thbr-doble">
+      <div class="thbr-doble-item">
+        <label for="calle">Calle</label>
+        <input type="text" id="calle" name="calle" value="<?php echo esc_attr($contrato->calle); ?>" required>
+      </div>
+      <div class="thbr-doble-item">      
+          <label for="numero">N° de puerta</label>
+          <input type="text" id="numero" name="numero" value="<?php echo esc_attr($contrato->numero); ?>">
+        </div>
+      </div>
+
+        <div class="thbr-doble">
+          <div class="thbr-doble-item">
+          <label for="manzana">Manzana</label>
+          <input type="text" id="manzana" name="manzana" value="<?php echo esc_attr($contrato->manzana); ?>">
+        </div>
+        <div class="thbr-doble-item">
+          <label for="solar">Solar</label>
+          <input type="text" id="solar" name="solar" value="<?php echo esc_attr($contrato->solar); ?>">
+        </div>
+      </div>
+
       <div class="thbr-campo">
-        <input type="text" name="direccion" value="<?php echo esc_attr($contrato->direccion); ?>" required>
+        <label for="barrio">Barrio / Localidad</label>
+        <input type="text" id="barrio" name="barrio" value="<?php echo esc_attr($contrato->barrio); ?>" required>
       </div>
+
+      <div class="thbr-campo">
+        <label for="departamento">Departamento</label>
+        <select id="departamento" name="departamento" required>
+          <?php
+          $departamentos = ['Montevideo','Canelones','Maldonado','Colonia','San José','Soriano','Flores','Florida','Durazno','Lavalleja','Treinta y Tres','Rocha','Rivera','Tacuarembó','Artigas','Paysandú','Salto', 'Cerro Largo', 'Río Negro'];
+          foreach ($departamentos as $d) {
+            echo '<option value="'.esc_attr($d).'" '.selected($contrato->departamento ?? '', $d, false).'>'.$d.'</option>';
+          }
+          ?>
+        </select>
+      </div>
+
       <div class="thbr-doble">
-        <input type="text" name="apartamento" value="<?php echo esc_attr($contrato->apartamento); ?>">
-        <input type="text" name="garage" value="<?php echo esc_attr($contrato->garage); ?>">
+        <div class="thbr-doble-item">
+          <label for="apartamento">Apartamento</label>
+          <input type="text" id="apartamento" name="apartamento" value="<?php echo esc_attr($contrato->apartamento); ?>">
+        </div>
+        <div class="thbr-doble-item">
+          <label for="garage">Garage</label>
+          <input type="text" id="garage" name="garage" value="<?php echo esc_attr($contrato->garage); ?>">
+        </div>
       </div>
-    </fieldset>
+  </fieldset>
 
     <!-- Propietario/a -->
     <fieldset>
       <div class="thbr-legend"><legend>Propietario/a</legend></div>
+
       <div class="thbr-doble">
+        <div class="thbr-doble-item">
         <input type="text" name="prop_nombre" value="<?php echo esc_attr($contrato->prop_nombre); ?>" required>
+        </div>
+       <div class="thbr-doble-item"> 
         <input type="text" name="prop_apellido" value="<?php echo esc_attr($contrato->prop_apellido); ?>" required>
       </div>
-      <div class="thbr-campo"><input type="tel" name="prop_telefono" value="<?php echo esc_attr($contrato->prop_telefono); ?>" required></div>
-      <div class="thbr-campo"><input type="email" name="prop_mail" value="<?php echo esc_attr($contrato->prop_mail); ?>" required></div>
+      </div>
+
+      <div class="thbr-campo">
+        <input type="tel" name="prop_telefono" value="<?php echo esc_attr($contrato->prop_telefono); ?>" required>
+      </div>
+      <div class="thbr-campo">
+        <input type="email" name="prop_mail" value="<?php echo esc_attr($contrato->prop_mail); ?>" required>
+      </div>
     </fieldset>
 
     <!-- Inquilino/a -->
     <fieldset>
       <div class="thbr-legend"><legend>Inquilino/a</legend></div>
+
       <div class="thbr-doble">
-        <input type="text" name="inq_nombre" value="<?php echo esc_attr($contrato->inq_nombre); ?>" required>
-        <input type="text" name="inq_apellido" value="<?php echo esc_attr($contrato->inq_apellido); ?>" required>
+        <div class="thbr-doble-item">
+          <input type="text" name="inq_nombre" value="<?php echo esc_attr($contrato->inq_nombre); ?>" required>
+        </div>
+        <div class="thbr-doble-item">
+          <input type="text" name="inq_apellido" value="<?php echo esc_attr($contrato->inq_apellido); ?>" required>
+        </div>
       </div>
-      <div class="thbr-campo"><input type="tel" name="inq_telefono" value="<?php echo esc_attr($contrato->inq_telefono); ?>" required></div>
-      <div class="thbr-campo"><input type="email" name="inq_mail" value="<?php echo esc_attr($contrato->inq_mail); ?>" required></div>
+
+      <div class="thbr-campo">
+        <input type="tel" name="inq_telefono" value="<?php echo esc_attr($contrato->inq_telefono); ?>" required>
+      </div>
+      <div class="thbr-campo">
+        <input type="email" name="inq_mail" value="<?php echo esc_attr($contrato->inq_mail); ?>" required>
+      </div>
     </fieldset>
 
     <!-- Condiciones -->
     <fieldset>
-  <div class="thbr-legend"><legend>Condiciones del contrato</legend></div>
+      <div class="thbr-legend"><legend>Condiciones del contrato</legend></div>
 
-  <!-- Precio del alquiler -->
-  <div class="thbr-fila">
-    <label>Precio del alquiler</label>
-    <div class="thbr-opciones">
+    <!-- Precio del alquiler -->
+    <div class="thbr-fila">
+      <label for="precio_alquiler">Precio del alquiler</label>
+      <div class="thbr-opciones">
+        <label>
+          <input type="radio" name="moneda" value="UYU" <?php checked($contrato->moneda ?? '', 'UYU'); ?> required> $U
+        </label>
       <label>
-        <input type="radio" name="moneda" value="UYU" <?php checked($contrato->moneda ?? '', 'UYU'); ?>> UYU
-      </label>
-      <label>
-        <input type="radio" name="moneda" value="USD" <?php checked($contrato->moneda ?? '', 'USD'); ?>> USD
+        <input type="radio" name="moneda" value="USD" <?php checked($contrato->moneda ?? '', 'USD'); ?>> $USD
       </label>
     </div>
   </div>
+
   <div class="thbr-campo">
-    <input type="number" name="precio_alquiler" step="0.01" 
+    <input type="number" name="precio_alquiler" step="1" min="0" 
            value="<?php echo esc_attr($contrato->precio_alquiler ?? ''); ?>" required>
   </div>
 
@@ -141,10 +214,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <label for="tipo_reajuste">Tipo de reajuste</label>
     <div class="thbr-opciones">
       <label>
-        <input type="radio" name="tipo_reajuste" value="IPC" <?php checked($contrato->tipo_reajuste ?? '', 'IPC'); ?>> IPC
+        <input type="radio" name="tipo_reajuste" value="IPC" <?php checked($contrato->tipo_reajuste ?? '', 'IPC'); ?> required> IPC
       </label>
       <label>
         <input type="radio" name="tipo_reajuste" value="URA" <?php checked($contrato->tipo_reajuste ?? '', 'URA'); ?>> URA
+      </label>
+      <label><input type="radio" name="tipo_reajuste" value="Ley 14.219" <?php checked($contrato->tipo_reajuste ?? '', 'Ley 14.219'); ?>> Ley 14.219
       </label>
     </div>
   </div>
@@ -152,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <!-- Garantía -->
   <div class="thbr-campo">
     <label for="garantia">Garantía</label>
-    <select name="garantia" required>
+    <select id="garantia" name="garantia" required>
       <?php
       $garantias = ['PORTO SEGURO','MAPFRE','SURA','ANDA','CGM','DEPÓSITO EN BHU','PROPIEDAD'];
       foreach ($garantias as $g) {
@@ -163,24 +238,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 
   <!-- Tiempo de contrato -->
-  <div class="thbr-campo">
-    <label>Tiempo de contrato</label>
-    <input type="text" name="tiempo_contrato" 
-           placeholder="Ej: 12meses"
-           value="<?php echo esc_attr($contrato->tiempo_contrato ?? ''); ?>">
+
+  <label for="duracion_anios" style="display:block; margin:20px 0 15px 22px; color: #1455bdff; font-weight:500; font-size:1rem; text-align:left;">Duración del contrato
+     </label>
+
+  <div class="thbr-doble">
+    <div class="thbr-doble-item">
+      <label for="duracion_anios">Años</label>
+      <select id="duracion_anios" name="duracion_anios">
+        <?php for ($i=0; $i<=5; $i++): ?>
+          <option value="<?php echo $i; ?>" <?php selected($contrato->duracion_anios ?? '', $i); ?>>
+            <?php echo $i === 0 ? '0' : $i.' año'.($i>1?'s':''); ?>
+          </option>
+        <?php endfor; ?>
+      </select>
+    </div>
+    <div class="thbr-doble-item">
+      <label for="duracion_meses">Meses</label>
+      <select id="duracion_meses" name="duracion_meses">
+        <?php for ($m=0; $m<=11; $m++): ?>
+          <option value="<?php echo $m; ?>"
+            <?php selected($contrato->duracion_meses ?? '', $m); ?>>
+            <?php echo $m.' mes'.($m!=1?'es':''); ?>
+          </option>
+        <?php endfor; ?>
+      </select>
+    </div>
   </div>
 
   <!-- Fechas -->
-  <div class="thbr-doble-label">
-    <div class="thbr-fecha">
+  <div class="thbr-doble">
+    <div class="thbr-doble-item">
       <label for="inicio">Fecha de inicio</label>
-      <input type="date" name="inicio" 
+      <input type="date" id="inicio"  name="inicio" 
              value="<?php echo esc_attr($contrato->inicio ?? ''); ?>" required>
     </div>
-    <div class="thbr-fecha">
+    <div class="thbr-doble-item">
       <label for="fin">Fecha de término</label>
-      <input type="date" name="fin" 
-             value="<?php echo esc_attr($contrato->fin ?? ''); ?>" required>
+      <input type="date" id="fin"  name="fin" 
+             value="<?php echo esc_attr($contrato->fin ?? ''); ?>" readonly>
     </div>
   </div>
 
@@ -198,13 +294,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </a>
     </p>
     <?php endif; ?>
-
-  </div>
-  
+  </div>  
 </fieldset>
     
      <button type="submit">Guardar cambios</button>
   </form>
 </div>
+
+<script>
+function calcularFechaFin() {
+  const inicio = document.getElementById('inicio').value;
+  const anios = parseInt(document.getElementById('duracion_anios').value);
+  const meses = parseInt(document.getElementById('duracion_meses').value);
+
+  if (!inicio) return;
+
+  const fechaInicio = new Date(inicio);
+  const fechaFin = new Date(fechaInicio);
+  fechaFin.setFullYear(fechaFin.getFullYear() + anios);
+  fechaFin.setMonth(fechaFin.getMonth() + meses);
+
+  const dia = fechaInicio.getDate();
+  if (fechaFin.getDate() !== dia) {
+    fechaFin.setDate(0);
+  }
+
+  const yyyy = fechaFin.getFullYear();
+  const mm = String(fechaFin.getMonth() + 1).padStart(2, '0');
+  const dd = String(fechaFin.getDate()).padStart(2, '0');
+  document.getElementById('fin').value = `${yyyy}-${mm}-${dd}`;
+}
+
+document.getElementById('inicio').addEventListener('change', calcularFechaFin);
+document.getElementById('duracion_anios').addEventListener('change', calcularFechaFin);
+document.getElementById('duracion_meses').addEventListener('change', calcularFechaFin);
+</script>
 
 <?php get_footer(); ?>

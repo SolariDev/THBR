@@ -4,6 +4,8 @@ Template Name: Ingresar
 */
 get_header();
 
+session_start();
+
 global $wpdb;
 $tabla = $wpdb->prefix . 'thbr_usuarios';
 

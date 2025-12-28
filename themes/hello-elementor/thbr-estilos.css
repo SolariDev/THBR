@@ -172,10 +172,44 @@ h2 {
   justify-content: center;
   margin-bottom: 16px;
 }
+.thbr-doble .thbr-campo {
+  flex: 1; max-width: 150px;
+  margin: 0;
+  padding: 0;
+  box-sizing:border-box;
+  align-items: flex-start;
+  text-align: left;
+}
+.thbr-doble .thbr-campo label {
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.thbr-doble .thbr-campo input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
 
-.thbr-doble input {
+.thbr-doble-item {
   flex: 1;
   max-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.thbr-doble-item label {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.thbr-doble-item input {
+  width: 100%;
   padding: 12px 14px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -210,19 +244,6 @@ h2 {
   gap: 6px;
 }
 
-.thbr-opciones select {
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.thbr-doble-label {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-
 .thbr-fecha {
   display: flex;
   flex-direction: column;
@@ -244,6 +265,46 @@ h2 {
   box-sizing: border-box;
 }
 
+/* Estilo institucional único para todos los select */ 
+select {
+  background-color: #ffffff;
+  border: 2px solid #1f3a93;
+  color: #1f3a93;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 15px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+select:focus {
+  outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 4px rgba(41,128,185,0.4);
+  background-color: #ffffff
+}
+
+/* Opciones dentro del desplegable */
+select option {
+  background-color: #ffffff;
+  color: #1f3a93;
+  font-weight: 500;
+}
+/* Opción seleccionada */
+select option:checked {
+  background-color: #d0e6f9;
+  color: #1f3a93;
+}
+/* Opción activa al recorrer con mouse o teclado */
+select option:hover,
+select option:focus,
+select option:active {
+  background-color: #1f3a93;
+  color: #ffffff;
+}
+ 
 /* ============================
    Mensajes de feedback
    ============================ */

@@ -7,6 +7,8 @@ session_start();
 
 $usuario = $_SESSION['thbr_usuario'] ?? null;
 
+session_write_close();
+
 if ($usuario) {
   global $wpdb;
   $tabla = $wpdb->prefix . 'thbr_contratos';
@@ -18,7 +20,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
       if ($resultado !== false) {
           echo "<div class='thbr-exito'>Contrato con ID $id eliminado correctamente.</div>";
       } else {
-          echo "<div class='thbr-error'>No se pudo eliminar el contrato con ID $id.</div>";
+          echo "<div class='thbr-error'>No se pudo eliminar el c con ID $id.</div>";
       }
   }
 
@@ -32,13 +34,13 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
   <!-- Botones a la izquierda -->
   <div>
     <a href="<?php echo home_url('/panel'); ?>" 
-       style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #2c3e50;">
+       style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #1c35a5ff;">
        ⚙️ Panel
     </a>
   </div>
 
   <!-- Usuario activo a la derecha -->
-  <div style="font-weight: 600; color: #2c3e50;">
+  <div style="font-weight: 600; color: #1c35a5ff;">
     Usuario: <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
   </div>
 </div>
@@ -92,13 +94,30 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
           } 
 
           // Dirección completa con apto y garage si existen
-          $direccionCompleta = $c->direccion;
+          $direccionCompleta = $c->calle;
+
+          if (!empty($c->numero)) {
+            $direccionCompleta .= ' Nº ' . $c->numero;
+          }
+
+          if (!empty($c->manzana)) {
+            $direccionCompleta .= ' M.' . $c->manzana;
+          }
+
+          if (!empty($c->solar)) {
+            $direccionCompleta .= ' S.' . $c->solar;
+          }
+
+          $direccionCompleta .= ', ' . $c->barrio . ', ' . $c->departamento;
+
           if (!empty($c->apartamento)) {
-            $direccionCompleta .= " - Apto: " . $c->apartamento;
+            $direccionCompleta .= ' - Apto: ' . $c->apartamento;
           }
+
           if (!empty($c->garage)) {
-            $direccionCompleta .= " - Garage: " . $c->garage;
+            $direccionCompleta .= ' - Garage: ' . $c->garage;
           }
+
 
           // Monto y moneda
           $monto = '';
@@ -125,8 +144,8 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
                     alt="Editar" style="width:20px;">
                 </a>
                 <a href="?accion=eliminar&id=<?php echo intval($c->id); ?>"
-                    onclick="return confirm('❌ ¿Querés eliminar el contrato  <?php echo addslashes($c->id);?> ?');"
-                    class="thbr-eliminar" title="Eliminar contrato">
+                    onclick="return confirm('❌ ¿Querés eliminar el c  <?php echo addslashes($c->id);?> ?');"
+                    class="thbr-eliminar" title="Eliminar c">
                     <img src="<?php echo esc_url( content_url('plugins/thbr/assets/eliminarcontrato.png') ); ?>" alt="Eliminar" style="width:20px;">
                   </a>
 
