@@ -13,25 +13,29 @@ if ($usuario) {
   global $wpdb;
   $tabla = $wpdb->prefix . 'thbr_contratos';
 
-if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id'])) {
+if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id'])) {
       $id = intval($_GET['id']);
-      $resultado = $wpdb->delete($tabla, ['id' => $id]);
+      $resultado = $wpdb->update(
+        $tabla,
+        ['papelera' => 1], //guardado en papelera
+        ['id' => $id]
+      );
 
       if ($resultado !== false) {
-          echo "<div class='thbr-exito'>Contrato con ID $id eliminado correctamente.</div>";
+          echo "<div class='thbr-exito'>Contrato con ID $id enviado a papelera correctamente.</div>";
       } else {
-          echo "<div class='thbr-error'>No se pudo eliminar el c con ID $id.</div>";
+          echo "<div class='thbr-error'>No se pudo enviar el contrato con ID $id a la papelera.</div>";
       }
   }
 
   $contratos = $wpdb->get_results(
-    $wpdb->prepare("SELECT * FROM $tabla WHERE id_usuario = %d ORDER BY fin ASC", $usuario['id'])
+    $wpdb->prepare("SELECT * FROM $tabla WHERE id_usuario = %d AND papelera = 0 ORDER BY fin ASC", $usuario['id'])
   );
 }
 ?>
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 40px;">
-  <!-- Botones a la izquierda -->
+    <!-- Botones a la izquierda -->
   <div>
     <a href="<?php echo home_url('/panel'); ?>" 
        style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #1c35a5ff;">
@@ -39,12 +43,11 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
     </a>
   </div>
 
-  <!-- Usuario activo a la derecha -->
+    <!-- Usuario activo a la derecha -->
   <div style="font-weight: 600; color: #1c35a5ff;">
-    Usuario: <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
+    <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
   </div>
 </div>
-
 
 <div class="thbr-historial">
   <h2>Historial de Contratos</h2>
@@ -143,12 +146,11 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
                   <img src="<?php echo esc_url( content_url('plugins/thbr/assets/edit.png') ); ?>" 
                     alt="Editar" style="width:20px;">
                 </a>
-                <a href="?accion=eliminar&id=<?php echo intval($c->id); ?>"
-                    onclick="return confirm('❌ ¿Querés eliminar el c  <?php echo addslashes($c->id);?> ?');"
-                    class="thbr-eliminar" title="Eliminar c">
-                    <img src="<?php echo esc_url( content_url('plugins/thbr/assets/eliminarcontrato.png') ); ?>" alt="Eliminar" style="width:20px;">
-                  </a>
-
+                <a href="?accion=papelera&id=<?php echo intval($c->id); ?>"
+                  onclick="return confirm('🗑️ ¿Querés enviar el contrato <?php echo addslashes($c->id);?> a la papelera?');"
+                  class="thbr-papelera" title="Enviar a papelera">
+                  <img src="<?php echo esc_url( content_url('plugins/thbr/assets/basura.png') ); ?>" alt="Papelera" style="width:20px;">
+                </a>
               </div>
             </td>
           </tr>
@@ -159,5 +161,12 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
     <p>No hay contratos registrados.</p>
   <?php endif; ?>
 </div>
+
+    <!-- Ícono fijo de acceso a la papelera -->
+  <div style="position:fixed; bottom:50px; right:60px;">
+    <a href="<?php echo site_url('/papeleracontratos'); ?>">
+      <img src="<?php echo esc_url( content_url('plugins/thbr/assets/verpapelera.png') ); ?>" alt="Ver papelera" style="width:30px;">
+    </a>
+  </div>
 
 <?php get_footer(); ?>

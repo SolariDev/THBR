@@ -23,15 +23,14 @@ session_write_close();
   </div>
 
   <!-- Bloque centrado: Logo y botones -->
-   <div class="thbr-botones-centrados">
+  <div class="thbr-botones-centrados">
     <img src="<?php echo plugins_url( 'assets/logobrthbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" />
 
-   <div class="grupo-botones">
-    <a href="<?php echo home_url('/nuevocontrato'); ?>" class="thbr-btn">Nuevo contrato</a>
-    <a href="<?php echo home_url('/historial'); ?>" class="thbr-btn">Historial</a>    
+    <div class="grupo-botones">
+      <a href="<?php echo home_url('/nuevocontrato'); ?>" class="thbr-btn">Nuevo contrato</a>
+      <a href="<?php echo home_url('/historial'); ?>" class="thbr-btn">Historial</a>    
+    </div>
   </div>
-</div>
-
 </div>
 
 <div style="position: absolute; bottom: 30px; left: 30px;">

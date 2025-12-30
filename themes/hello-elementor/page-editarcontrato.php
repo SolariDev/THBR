@@ -3,8 +3,8 @@
 Template Name: Editar Contrato
 */
 get_header();
-session_start();
 
+session_start();
 $usuario = $_SESSION['thbr_usuario'] ?? null;
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -77,10 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <a href="<?php echo home_url('/historial'); ?>" 
        style="font-weight:600;text-decoration:none;color: #1c35a5ff;">📂 Historial</a>
   </div>
-
   <!-- Usuario activo a la derecha -->
   <div style="font-weight:600;color: #1c35a5ff;">
-    Usuario: <?php echo esc_html($usuario['nombre'].' '.$usuario['apellido']); ?>
+    <?php echo esc_html($usuario['nombre'].' '.$usuario['apellido']); ?>
   </div>
 </div>
 
@@ -102,102 +101,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="thbr-doble-item">      
           <label for="numero">N° de puerta</label>
           <input type="text" id="numero" name="numero" value="<?php echo esc_attr($contrato->numero); ?>">
-        </div>
       </div>
+    </div>
 
-        <div class="thbr-doble">
-          <div class="thbr-doble-item">
-          <label for="manzana">Manzana</label>
-          <input type="text" id="manzana" name="manzana" value="<?php echo esc_attr($contrato->manzana); ?>">
-        </div>
-        <div class="thbr-doble-item">
-          <label for="solar">Solar</label>
-          <input type="text" id="solar" name="solar" value="<?php echo esc_attr($contrato->solar); ?>">
-        </div>
+    <div class="thbr-doble">
+      <div class="thbr-doble-item">
+        <label for="manzana">Manzana</label>
+        <input type="text" id="manzana" name="manzana" value="<?php echo esc_attr($contrato->manzana); ?>">
       </div>
+      <div class="thbr-doble-item">
+        <label for="solar">Solar</label>
+        <input type="text" id="solar" name="solar" value="<?php echo esc_attr($contrato->solar); ?>">
+      </div>
+    </div>
 
-      <div class="thbr-campo">
-        <label for="barrio">Barrio / Localidad</label>
-        <input type="text" id="barrio" name="barrio" value="<?php echo esc_attr($contrato->barrio); ?>" required>
-      </div>
+    <div class="thbr-campo">
+      <label for="barrio">Barrio / Localidad</label>
+      <input type="text" id="barrio" name="barrio" value="<?php echo esc_attr($contrato->barrio); ?>" required>
+    </div>
 
-      <div class="thbr-campo">
-        <label for="departamento">Departamento</label>
-        <select id="departamento" name="departamento" required>
-          <?php
-          $departamentos = ['Montevideo','Canelones','Maldonado','Colonia','San José','Soriano','Flores','Florida','Durazno','Lavalleja','Treinta y Tres','Rocha','Rivera','Tacuarembó','Artigas','Paysandú','Salto', 'Cerro Largo', 'Río Negro'];
-          foreach ($departamentos as $d) {
-            echo '<option value="'.esc_attr($d).'" '.selected($contrato->departamento ?? '', $d, false).'>'.$d.'</option>';
-          }
-          ?>
-        </select>
-      </div>
+    <div class="thbr-campo">
+      <label for="departamento">Departamento</label>
+      <select id="departamento" name="departamento" required>
+      <?php
+        $departamentos = ['Montevideo','Canelones','Maldonado','Colonia','San José','Soriano','Flores','Florida','Durazno','Lavalleja','Treinta y Tres','Rocha','Rivera','Tacuarembó','Artigas','Paysandú','Salto', 'Cerro Largo', 'Río Negro'];
+        foreach ($departamentos as $d) {
+          echo '<option value="'.esc_attr($d).'" '.selected($contrato->departamento ?? '', $d, false).'>'.$d.'</option>';
+        }
+      ?>
+      </select>
+    </div>
 
-      <div class="thbr-doble">
-        <div class="thbr-doble-item">
-          <label for="apartamento">Apartamento</label>
-          <input type="text" id="apartamento" name="apartamento" value="<?php echo esc_attr($contrato->apartamento); ?>">
-        </div>
-        <div class="thbr-doble-item">
-          <label for="garage">Garage</label>
-          <input type="text" id="garage" name="garage" value="<?php echo esc_attr($contrato->garage); ?>">
-        </div>
+    <div class="thbr-doble">
+      <div class="thbr-doble-item">
+        <label for="apartamento">Apartamento</label>
+        <input type="text" id="apartamento" name="apartamento" value="<?php echo esc_attr($contrato->apartamento); ?>">
       </div>
+      <div class="thbr-doble-item">
+        <label for="garage">Garage</label>
+        <input type="text" id="garage" name="garage" value="<?php echo esc_attr($contrato->garage); ?>">
+      </div>
+    </div>
   </fieldset>
 
     <!-- Propietario/a -->
-    <fieldset>
-      <div class="thbr-legend"><legend>Propietario/a</legend></div>
+  <fieldset>
+    <div class="thbr-legend"><legend>Propietario/a</legend></div>
 
-      <div class="thbr-doble">
-        <div class="thbr-doble-item">
+    <div class="thbr-doble">
+      <div class="thbr-doble-item">
         <input type="text" name="prop_nombre" value="<?php echo esc_attr($contrato->prop_nombre); ?>" required>
-        </div>
-       <div class="thbr-doble-item"> 
+      </div>
+      <div class="thbr-doble-item"> 
         <input type="text" name="prop_apellido" value="<?php echo esc_attr($contrato->prop_apellido); ?>" required>
       </div>
-      </div>
+    </div>
 
-      <div class="thbr-campo">
-        <input type="tel" name="prop_telefono" value="<?php echo esc_attr($contrato->prop_telefono); ?>" required>
-      </div>
-      <div class="thbr-campo">
-        <input type="email" name="prop_mail" value="<?php echo esc_attr($contrato->prop_mail); ?>" required>
-      </div>
-    </fieldset>
+    <div class="thbr-campo">
+      <input type="tel" name="prop_telefono" value="<?php echo esc_attr($contrato->prop_telefono); ?>" required>
+    </div>
+    <div class="thbr-campo">
+      <input type="email" name="prop_mail" value="<?php echo esc_attr($contrato->prop_mail); ?>" required>
+    </div>
+  </fieldset>
 
     <!-- Inquilino/a -->
-    <fieldset>
-      <div class="thbr-legend"><legend>Inquilino/a</legend></div>
+  <fieldset>
+    <div class="thbr-legend"><legend>Inquilino/a</legend></div>
 
-      <div class="thbr-doble">
-        <div class="thbr-doble-item">
-          <input type="text" name="inq_nombre" value="<?php echo esc_attr($contrato->inq_nombre); ?>" required>
-        </div>
-        <div class="thbr-doble-item">
-          <input type="text" name="inq_apellido" value="<?php echo esc_attr($contrato->inq_apellido); ?>" required>
-        </div>
+    <div class="thbr-doble">
+      <div class="thbr-doble-item">
+        <input type="text" name="inq_nombre" value="<?php echo esc_attr($contrato->inq_nombre); ?>" required>
       </div>
+      <div class="thbr-doble-item">
+        <input type="text" name="inq_apellido" value="<?php echo esc_attr($contrato->inq_apellido); ?>" required>
+      </div>
+    </div>
 
-      <div class="thbr-campo">
-        <input type="tel" name="inq_telefono" value="<?php echo esc_attr($contrato->inq_telefono); ?>" required>
-      </div>
-      <div class="thbr-campo">
-        <input type="email" name="inq_mail" value="<?php echo esc_attr($contrato->inq_mail); ?>" required>
-      </div>
-    </fieldset>
+    <div class="thbr-campo">
+      <input type="tel" name="inq_telefono" value="<?php echo esc_attr($contrato->inq_telefono); ?>" required>
+    </div>
+    <div class="thbr-campo">
+      <input type="email" name="inq_mail" value="<?php echo esc_attr($contrato->inq_mail); ?>" required>
+    </div>
+  </fieldset>
 
     <!-- Condiciones -->
-    <fieldset>
-      <div class="thbr-legend"><legend>Condiciones del contrato</legend></div>
+  <fieldset>
+    <div class="thbr-legend"><legend>Condiciones del contrato</legend></div>
 
     <!-- Precio del alquiler -->
-    <div class="thbr-fila">
-      <label for="precio_alquiler">Precio del alquiler</label>
-      <div class="thbr-opciones">
-        <label>
-          <input type="radio" name="moneda" value="UYU" <?php checked($contrato->moneda ?? '', 'UYU'); ?> required> $U
-        </label>
+  <div class="thbr-fila">
+    <label for="precio_alquiler">Precio del alquiler</label>
+    <div class="thbr-opciones">
+      <label>
+        <input type="radio" name="moneda" value="UYU" <?php checked($contrato->moneda ?? '', 'UYU'); ?> required> $U
+      </label>
       <label>
         <input type="radio" name="moneda" value="USD" <?php checked($contrato->moneda ?? '', 'USD'); ?>> $USD
       </label>
@@ -209,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
            value="<?php echo esc_attr($contrato->precio_alquiler ?? ''); ?>" required>
   </div>
 
-  <!-- Tipo de reajuste -->
+    <!-- Tipo de reajuste -->
   <div class="thbr-fila">
     <label for="tipo_reajuste">Tipo de reajuste</label>
     <div class="thbr-opciones">
@@ -266,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div>
 
-  <!-- Fechas -->
+    <!-- Fechas -->
   <div class="thbr-doble">
     <div class="thbr-doble-item">
       <label for="inicio">Fecha de inicio</label>
@@ -280,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div>
 
-  <!-- Link Drive -->
+    <!-- Link Drive -->
   <div class="thbr-campo">
     <label for="link_drive">Link de carpeta Drive</label>
     <input type="url" name="link_drive" 

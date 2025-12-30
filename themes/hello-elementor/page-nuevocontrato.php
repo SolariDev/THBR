@@ -68,30 +68,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     echo "<div class='thbr-exito'>Contrato registrado correctamente.</div>";
   } else {
     echo "<div class='thbr-error'>Error al registrar el contrato: " . esc_html($wpdb->last_error) . "</div>";
-  }
-  
+  }  
 }
 ?>
 
 <div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 40px;">
-  <!-- Botones a la izquierda -->
+    <!-- Botones a la izquierda -->
   <div>
     <a href="<?php echo home_url('/panel'); ?>" 
        style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #1c35a5ff;">
        ⚙️ Panel
-
-
     </a>
     <a href="<?php echo home_url('/historial'); ?>" 
        style="font-weight: 600; text-decoration: none; color: #1c35a5ff;">
-       📑 Historial
-
+       📂 Historial
     </a>
   </div>
 
-  <!-- Usuario activo a la derecha -->
+    <!-- Usuario activo a la derecha -->
   <div style="font-weight: 600; color: #1c35a5ff;">
-    Usuario: <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
+    <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
   </div>
 </div>
 
@@ -105,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
   <div class="thbr-legend"><legend>Propiedad</legend></div>
 
   <!-- Calle y N° de puerta -->
-   <div class="thbr-doble">
+  <div class="thbr-doble">
     <div class="thbr-doble-item">
       <label for="calle">Calle</label>
       <input type="text" id="calle" name="calle" required>
@@ -116,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     </div>
   </div>
 
-  <!-- Manzana y Solar -->
+    <!-- Manzana y Solar -->
   <div class="thbr-doble">
     <div class="thbr-doble-item">
       <label for="manzana">Manzana</label>
@@ -128,13 +124,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     </div>
   </div>
 
-  <!-- Barrio -->
-   <div class="thbr-campo">
+    <!-- Barrio -->
+  <div class="thbr-campo">
     <label for="barrio">Barrio / Localidad</label>
     <input type="text" id="barrio" name="barrio" required>
   </div>
 
-  <!-- Departamento -->
+    <!-- Departamento -->
   <div class="thbr-campo">
     <label for="departamento">Departamento</label>
     <select id="departamento" name="departamento" required>
@@ -161,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     </select>
   </div>
 
-  <!-- Apartamento y Garage -->
+    <!-- Apartamento y Garage -->
   <div class="thbr-doble">
     <div class="thbr-doble-item">
       <label for="apartamento">Apartamento</label>
@@ -174,54 +170,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
   </div>
 </fieldset>
 
-
-
-
     <!-- Propietario/a -->
-    <fieldset>
-      <div class="thbr-legend"><legend>Propietario/a</legend></div>
+<fieldset>
+  <div class="thbr-legend"><legend>Propietario/a</legend></div>
 
-      <div class="thbr-doble">
-        <div class="thbr-doble-item">
-          <input type="text" name="prop_nombre" placeholder="Nombre" required>        
-        </div>
-        <div class="thbr-doble-item">
-          <input type="text" name="prop_apellido" placeholder="Apellido" required>
-        </div>
-      </div>
+  <div class="thbr-doble">
+    <div class="thbr-doble-item">
+      <input type="text" name="prop_nombre" placeholder="Nombre" required>        
+    </div>
+    <div class="thbr-doble-item">
+      <input type="text" name="prop_apellido" placeholder="Apellido" required>
+    </div>
+  </div>
 
-      <div class="thbr-campo">
-        <input type="tel" name="prop_telefono" placeholder="Teléfono de contacto" required>
-      </div>
+  <div class="thbr-campo">
+    <input type="tel" name="prop_telefono" placeholder="Teléfono de contacto" required>
+  </div>
 
-      <div class="thbr-campo">
-        <input type="email" name="prop_mail" placeholder="Mail" required>
-      </div>
-    </fieldset>
+  <div class="thbr-campo">
+    <input type="email" name="prop_mail" placeholder="Mail" required>
+  </div>
+</fieldset>
 
     <!-- Inquilino/a -->
-    <fieldset>
-      <div class="thbr-legend"><legend>Inquilino/a</legend></div>
+<fieldset>
+  <div class="thbr-legend"><legend>Inquilino/a</legend></div>
 
-      <div class="thbr-doble">
-        <div class="thbr-doble-item">
-          <input type="text" name="inq_nombre" placeholder="Nombre" required>
-        </div>
-        <div class="thbr-doble-item">
-          <input type="text" name="inq_apellido" placeholder="Apellido" required>
-        </div>
-      </div>
+  <div class="thbr-doble">
+    <div class="thbr-doble-item">
+      <input type="text" name="inq_nombre" placeholder="Nombre" required>
+    </div>
+    <div class="thbr-doble-item">
+      <input type="text" name="inq_apellido" placeholder="Apellido" required>
+    </div>
+  </div>
       
-      <div class="thbr-campo">
-        <input type="tel" name="inq_telefono" placeholder="Teléfono de contacto" required>
-      </div>
+  <div class="thbr-campo">
+    <input type="tel" name="inq_telefono" placeholder="Teléfono de contacto" required>
+  </div>
 
-      <div class="thbr-campo">
-        <input type="email" name="inq_mail" placeholder="Mail" required>
-      </div>
-    </fieldset>
+  <div class="thbr-campo">
+    <input type="email" name="inq_mail" placeholder="Mail" required>
+  </div>
+</fieldset>
 
-<!-- Condiciones -->
+  <!-- Condiciones -->
  
 <fieldset>
   <div class="thbr-legend"><legend>Condiciones del contrato</legend></div>
@@ -234,23 +227,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
       <label><input type="radio" name="moneda" value="USD"> $USD</label>
     </div>
   </div>
+
   <div class="thbr-campo">
     <input type="number" id="precio_alquiler" name="precio_alquiler" step="1" min="0" value="0" required>
   </div>
 
-  <!-- Tipo de reajuste -->
+    <!-- Tipo de reajuste -->
   <div class="thbr-fila">
     <label for="tipo_reajuste">Tipo de reajuste</label>
     <div class="thbr-opciones">
       <label><input type="radio" name="tipo_reajuste" value="IPC" required> IPC</label>
       <label><input type="radio" name="tipo_reajuste" value="URA"> URA</label>
-      <label><input type="radio" name="tipo_reajuste" value="Ley 14.219"> Ley 14.219
-</label>
-
+      <label><input type="radio" name="tipo_reajuste" value="Ley 14.219"> Ley 14.219</label>
     </div>
   </div>
 
-  <!-- Garantía -->
+    <!-- Garantía -->
   <div class="thbr-campo">
     <label for="garantia">Garantía</label>
     <select id="garantia" name="garantia" required>
@@ -265,8 +257,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
   </div>
 
     <!-- Tiempo de contrato -->
-     <label for="duracion_anios" style="display:block; margin:20px 0 15px 22px; color: #1455bdff; font-weight:500; font-size:1rem; text-align:left;">Duración del contrato
-     </label>
+  <label for="duracion_anios" style="display:block; margin:20px 0 15px 22px; color: #1455bdff; font-weight:500; font-size:1rem; text-align:left;">Duración del contrato
+  </label>
       
   <div class="thbr-doble">
     <div class="thbr-doble-item">
@@ -299,20 +291,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     </div>
   </div>
 
-<!-- Fechas -->
-<div class="thbr-doble">
-  <div class="thbr-doble-item">
-    <label for="inicio">Fecha de inicio</label>
-    <input type="date" id="inicio" name="inicio" required>
+    <!-- Fechas -->
+  <div class="thbr-doble">
+    <div class="thbr-doble-item">
+      <label for="inicio">Fecha de inicio</label>
+      <input type="date" id="inicio" name="inicio" required>
+    </div>
+    <div class="thbr-doble-item">
+      <label for="fin">Fecha de término</label>
+      <input type="date" id="fin" name="fin" readonly>
+    </div>
   </div>
-  <div class="thbr-doble-item">
-    <label for="fin">Fecha de término</label>
-    <input type="date" id="fin" name="fin" readonly>
-  </div>
-</div>
-
   
-  <!-- Link de carpeta Drive -->
+    <!-- Link de carpeta Drive -->
   <div class="thbr-campo">
     <label for="link_drive">Link de carpeta Drive</label>
     <input type="url" id="link_drive" name="link_drive" placeholder="https://..." required>
@@ -324,7 +315,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
   </form>
 </div>
 
-<script> // Aquí va el script de cálculo automático de fechas 
+<script> // script de cálculo automático de fechas 
     function calcularFechaFin() {
       const inicio = document.getElementById('inicio').value;
       const anios = parseInt(document.getElementById('duracion_anios').value);

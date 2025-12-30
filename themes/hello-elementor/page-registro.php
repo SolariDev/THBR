@@ -35,13 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="thbr-registro">
-  <!-- Logo institucional -->
+    <!-- Logo institucional -->
   <img src="<?php echo plugins_url( 'assets/logobrthbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" />
 
-  <!-- Título institucional -->
+    <!-- Título institucional -->
   <h2>Crea tu cuenta</h2>
 
-  <!-- Formulario de registro -->
+    <!-- Formulario de registro -->
   <form method="post">
     <div class="thbr-campo">
     <label for="nombre">Nombre</label>
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <button type="submit" class="thbr-boton-registro">Registrate</button>
   </form>
 
-  <!-- Enlace inferior -->
+    <!-- Enlace inferior -->
   <div class="thbr-link">
     <a href="<?php echo home_url('/ingresar'); ?>" class="enlace-ingreso">¿Ya tenés cuenta? Inicia sesión</a>
   </div>

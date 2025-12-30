@@ -35,13 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<!-- Vista institucional del login -->
+  <!-- Vista institucional del login -->
 <div class="thbr-ingreso">
 
-  <!-- Logo institucional -->
+    <!-- Logo institucional -->
   <img src="<?php echo plugins_url( 'assets/logobrthbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" />
   
-<!-- Formulario de ingreso -->
+    <!-- Formulario de ingreso -->
   <form method="post" autocomplete="off">
     <input type="email" id="correo" name="correo" required placeholder="Correo electrónico" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
 
