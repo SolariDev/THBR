@@ -35,23 +35,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <div class="thbr-registro">
-  <!-- Logo institucional -->
+    <!-- Logo institucional -->
   <img src="<?php echo plugins_url( 'assets/logobrthbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" />
 
-  <!-- Título institucional -->
+    <!-- Título institucional -->
   <h2>Crea tu cuenta</h2>
 
-  <!-- Formulario de registro -->
+    <!-- Formulario de registro -->
   <form method="post">
-    <div class="thbr-campo">
-    <label for="nombre">Nombre</label>
-    <input type="text" id="nombre" name="nombre" required>
-</div>
-
-<div class="thbr-campo">
-    <label for="apellido">Apellido</label>
-    <input type="text" id="apellido" name="apellido" required>
-</div>
+    <div class="thbr-doble">
+      <div class="thbr-doble-item">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required>
+      </div>
+      <div class="thbr-doble-item">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" name="apellido" required>
+      </div>
+    </div>
 
     <div class="thbr-campo">
     <label for="correo">Correo electrónico</label>
@@ -66,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <button type="submit" class="thbr-boton-registro">Registrate</button>
   </form>
 
-  <!-- Enlace inferior -->
+    <!-- Enlace inferior -->
   <div class="thbr-link">
     <a href="<?php echo home_url('/ingresar'); ?>" class="enlace-ingreso">¿Ya tenés cuenta? Inicia sesión</a>
   </div>

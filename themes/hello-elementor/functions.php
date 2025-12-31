@@ -237,6 +237,14 @@ if ( ! function_exists( 'hello_elementor_customizer' ) ) {
 }
 add_action( 'init', 'hello_elementor_customizer' );
 
+// 🔒 Iniciar sesión global en WordPress
+add_action('init', function() {
+    if (!session_id()) {
+		if (is_page(['panel', 'nuevocontrato', 'editarcontrato', 'historial'])){
+        session_start();
+		}
+    }
+});
 
 /**
  * BC:
@@ -252,5 +260,3 @@ if ( ! function_exists( 'hello_elementor_body_open' ) ) {
 require HELLO_THEME_PATH . '/theme.php';
 
 HelloTheme\Theme::instance();
-
-
