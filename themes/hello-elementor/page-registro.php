@@ -43,15 +43,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- Formulario de registro -->
   <form method="post">
-    <div class="thbr-campo">
-    <label for="nombre">Nombre</label>
-    <input type="text" id="nombre" name="nombre" required>
-</div>
-
-<div class="thbr-campo">
-    <label for="apellido">Apellido</label>
-    <input type="text" id="apellido" name="apellido" required>
-</div>
+    <div class="thbr-doble">
+      <div class="thbr-doble-item">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" required>
+      </div>
+      <div class="thbr-doble-item">
+          <label for="apellido">Apellido</label>
+          <input type="text" id="apellido" name="apellido" required>
+      </div>
+    </div>
 
     <div class="thbr-campo">
     <label for="correo">Correo electrónico</label>

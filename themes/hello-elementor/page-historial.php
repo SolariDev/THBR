@@ -41,6 +41,10 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
        style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #1c35a5ff;">
        ⚙️ Panel
     </a>
+    <a href="<?php echo home_url('/papeleracontratos'); ?>"
+    style="font-weight: 600; text-decoration: none; color: #1c35a5ff;">
+    🗑️ Ver Papelera
+    </a>
   </div>
 
     <!-- Usuario activo a la derecha -->
@@ -160,13 +164,6 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
   <?php else: ?>
     <p>No hay contratos registrados.</p>
   <?php endif; ?>
-</div>
-
-    <!-- Ícono fijo de acceso a la papelera -->
-  <div style="position:fixed; bottom:50px; right:60px;">
-    <a href="<?php echo site_url('/papeleracontratos'); ?>">
-      <img src="<?php echo esc_url( content_url('plugins/thbr/assets/verpapelera.png') ); ?>" alt="Ver papelera" style="width:30px;">
-    </a>
-  </div>
+</div> 
 
 <?php get_footer(); ?>

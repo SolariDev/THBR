@@ -36,12 +36,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $link_drive = !empty($_POST['link_drive']) ? filter_var($_POST['link_drive'], FILTER_VALIDATE_URL) : '';
 
   $datos = [
-    'calle' => sanitize_text_field($_POST['calle'] ?? ''), 
-    'numero' => sanitize_text_field($_POST['numero'] ?? ''),
-    'manzana' => sanitize_text_field($_POST['manzana'] ?? ''),
-    'solar' => sanitize_text_field($_POST['solar'] ?? ''),
-    'barrio' => sanitize_text_field($_POST['barrio'] ?? ''),
-    'departamento' => sanitize_text_field($_POST['departamento'] ?? ''),
+    'calle'           => sanitize_text_field($_POST['calle'] ?? ''), 
+    'numero'          => sanitize_text_field($_POST['numero'] ?? ''),
+    'manzana'         => sanitize_text_field($_POST['manzana'] ?? ''),
+    'solar'           => sanitize_text_field($_POST['solar'] ?? ''),
+    'barrio'          => sanitize_text_field($_POST['barrio'] ?? ''),
+    'departamento'    => sanitize_text_field($_POST['departamento'] ?? ''),
     'apartamento'     => sanitize_text_field($_POST['apartamento'] ?? ''),
     'garage'          => sanitize_text_field($_POST['garage'] ?? ''),
     'prop_nombre'     => sanitize_text_field($_POST['prop_nombre'] ?? ''),
