@@ -1,21 +1,4 @@
 <?php
-/*
-Template Name: Editar Contrato
-*/
-get_header();
-
-session_start();
-$usuario = $_SESSION['thbr_usuario'] ?? null;
-$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-
-session_write_close();
-
-if (!$usuario || !$id) {
-  echo "<div class='thbr-error'>Acceso no autorizado.</div>";
-  get_footer();
-  exit;
-}
-
 global $wpdb;
 $tabla = $wpdb->prefix . 'thbr_contratos';
 
@@ -27,8 +10,6 @@ $contrato = $wpdb->get_row($wpdb->prepare(
 
 if (!$contrato) {
   echo "<div class='thbr-error'>Contrato no encontrado.</div>";
-  get_footer();
-  exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -69,21 +50,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<div style="display:flex;justify-content:space-between;align-items:center;margin:30px 40px;">
+<div style="max-width:960px; margin:0 auto; padding:20px 0px; display:grid; grid-template-columns: 1fr auto 1fr; align-items:center; box-sizing:border-box;">
   <!-- Botones a la izquierda -->
-  <div>
+  <div style="justify-self:start;">
     <a href="<?php echo home_url('/panel'); ?>" 
        style="margin-right:12px;font-weight:600;text-decoration:none;color: #1c35a5ff;">⚙️ Panel</a>
     <a href="<?php echo home_url('/historial'); ?>" 
        style="font-weight:600;text-decoration:none;color: #1c35a5ff;">📂 Historial</a>
   </div>
+
+  <div style="justify-self:center;">
+  <img src="<?php echo plugins_url( 'assets/logothbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" 
+       alt="Logo TreeHouse" 
+       style="max-width:120px; height:auto;" />
+  </div>
+
   <!-- Usuario activo a la derecha -->
-  <div style="font-weight:600;color: #1c35a5ff;">
+  <div style="justify-self:right; font-weight:600; color: #1c35a5ff;">
     <?php echo esc_html($usuario['nombre'].' '.$usuario['apellido']); ?>
   </div>
 </div>
 
-<div class="thbr-contrato">
+<div class="thbr-contrato" style="padding-top:0;">
   <h2>Editar Contrato</h2>
 
   <form method="post" class="thbr-form" autocomplete="off">
@@ -328,5 +316,3 @@ document.getElementById('inicio').addEventListener('change', calcularFechaFin);
 document.getElementById('duracion_anios').addEventListener('change', calcularFechaFin);
 document.getElementById('duracion_meses').addEventListener('change', calcularFechaFin);
 </script>
-
-<?php get_footer(); ?>

@@ -1,17 +1,15 @@
 <?php
-/*
-Template Name: Registro
-*/
-get_header();
+// shortcode [thbr_registro]
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $wpdb;
     $tabla = $wpdb->prefix . 'thbr_usuarios';
 
-    $nombre   = sanitize_text_field($_POST['nombre']);
-    $apellido = sanitize_text_field($_POST['apellido']);
-    $correo   = sanitize_email($_POST['correo']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $nombre   = sanitize_text_field($_POST['nombre'] ?? '');
+    $apellido = sanitize_text_field($_POST['apellido'] ?? '');
+    $correo   = sanitize_email($_POST['correo'] ?? '');
+    $password = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : '';
+
 
     if ($nombre && $apellido && $correo && $password) {
         // Verificar si el correo ya existe
@@ -34,12 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<div class="thbr-registro">
+<div class="thbr-registro" style="padding-top: 10px;" >
     <!-- Logo institucional -->
   <img src="<?php echo plugins_url( 'assets/logobrthbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" />
 
     <!-- Título institucional -->
-  <h2>Crea tu cuenta</h2>
+  <h2 style="margin-top:-20px;">Crea tu cuenta</h2>
 
     <!-- Formulario de registro -->
   <form method="post">
@@ -72,7 +70,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <a href="<?php echo home_url('/ingresar'); ?>" class="enlace-ingreso">¿Ya tenés cuenta? Inicia sesión</a>
   </div>
 </div>
-
-<?php 
-get_footer();
- ?>

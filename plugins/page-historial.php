@@ -1,12 +1,8 @@
 <?php
-/*
-Template Name: Historial
-*/
-get_header();
+// shortcode: [thbr_historial]
 session_start();
 
 $usuario = $_SESSION['thbr_usuario'] ?? null;
-
 session_write_close();
 
 if ($usuario) {
@@ -34,9 +30,9 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
 }
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 40px;">
+<div style="max-width:960px; margin:0 auto; padding:20px 0; display:grid; grid-template-columns:1fr auto 1fr;                   align-items:center; box-sizing:border-box;">
     <!-- Botones a la izquierda -->
-  <div>
+  <div style="justify-self:start;">
     <a href="<?php echo home_url('/panel'); ?>" 
        style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #1c35a5ff;">
        ⚙️ Panel
@@ -47,13 +43,19 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
     </a>
   </div>
 
+  <div style="justify-self:center;">
+  <img src="<?php echo plugins_url( 'assets/logothbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" 
+       alt="Logo TreeHouse" 
+       style="max-width:120px; height:auto;" />
+  </div>
+
     <!-- Usuario activo a la derecha -->
-  <div style="font-weight: 600; color: #1c35a5ff;">
-    <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
+  <div style="justify-self:right; font-weight: 600; color: #1c35a5ff;">
+    <?php echo $usuario ? esc_html($usuario['nombre'] . ' ' . $usuario['apellido']) : 'No hay usuario registrado'; ?>
   </div>
 </div>
 
-<div class="thbr-historial">
+<div class="thbr-historial" style="padding-top:0;">
   <h2>Historial de Contratos</h2>
 
   <?php if (!empty($contratos)): ?>
@@ -146,7 +148,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
 
             <td>
               <div class="thbr-acciones">
-                <a href="<?php echo site_url('/editarcontrato?id=' . $c->id); ?>">
+                <a href="<?php echo site_url('/editarcontrato?id=' . $c->id); ?>" title="Editar contrato">
                   <img src="<?php echo esc_url( content_url('plugins/thbr/assets/edit.png') ); ?>" 
                     alt="Editar" style="width:20px;">
                 </a>
@@ -164,6 +166,4 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
   <?php else: ?>
     <p>No hay contratos registrados.</p>
   <?php endif; ?>
-</div> 
-
-<?php get_footer(); ?>
+</div>

@@ -1,15 +1,12 @@
 <?php
-/*
-Template Name: Papelera
-*/
-get_header();
+// shortcode: [thbr_papelera]
 session_start();
 
 $usuario = $_SESSION['thbr_usuario'] ?? null;
 session_write_close();
 
 if (!$usuario) {
-  wp_redirect(home_url('/login'));
+  wp_redirect(home_url('/ingresar'));
   exit;
 }
 
@@ -46,8 +43,9 @@ $contratos = $wpdb->get_results(
 );
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 40px;">
-  <div>
+<div style="max-width:960px; margin:0 auto; padding:20px 0; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; box-sizing:border-box;">
+
+  <div style="justify-self:start;">
     <a href="<?php echo home_url('/panel'); ?>" 
        style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #1c35a5ff;">
        ⚙️ Panel
@@ -57,13 +55,19 @@ $contratos = $wpdb->get_results(
        📂 Historial
     </a>
   </div>
-  <div style="font-weight: 600; color: #1c35a5ff;">
+
+  <div style="justify-self:center;">
+    <img src="<?php echo plugins_url( 'assets/logothbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>"
+    alt="Logo TreeHouse" style="max-width:120px; height:auto;" />
+  </div>
+
+  <div style="justify-self:right; font-weight: 600; color: #1c35a5ff;">
     <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
   </div>
 </div>
 
 <div class="thbr-historial">
-  <h2 style="color: #1c35a5ff; margin-left:40px;">🗂️ Contratos en Papelera</h2>
+  <h2>Contratos en Papelera</h2>
 
   <?php if (!empty($contratos)): ?>
     <table class="thbr-tabla">
@@ -92,7 +96,13 @@ $contratos = $wpdb->get_results(
             $direccionCompleta .= ' S.' . $c->solar;
           }
 
-          $direccionCompleta .= ', ' . $c->barrio . ', ' . $c->departamento;
+          if (!empty($c->barrio)) {
+            $direccionCompleta .= ', ' . $c->barrio;
+          }
+          
+          if (!empty($c->departamento)) {
+            $direccionCompleta .= ', ' . $c->departamento;
+          }
 
           if (!empty($c->apartamento)) {
             $direccionCompleta .= ' - Apto: ' . $c->apartamento;
@@ -101,7 +111,7 @@ $contratos = $wpdb->get_results(
             $direccionCompleta .= ' - Garage: ' . $c->garage;
           }
         ?>
-          <tr style="background-color:#eaeaea; color:#333;">
+          <tr style="background-color: #eaf3ff; color:#333;">
             <td><?php echo esc_html($c->id); ?></td>
             <td><?php echo esc_html($direccionCompleta); ?></td>
             <td><?php echo esc_html($c->prop_nombre . ' ' . $c->prop_apellido); ?></td>
@@ -130,6 +140,3 @@ $contratos = $wpdb->get_results(
     <p style="margin-left:40px;">No hay contratos en papelera.</p>
   <?php endif; ?>
 </div>
-
-<?php get_footer(); ?>
-

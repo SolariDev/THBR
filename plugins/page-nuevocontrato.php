@@ -1,18 +1,20 @@
 <?php
-/*
-Template Name: Nuevo Contrato
-*/
-get_header();
-
+// shortcode: [thbr_nuevocontrato]
 session_start();
+
 $usuario = $_SESSION['thbr_usuario'] ?? null;
 session_write_close();
+
+if (!$usuario) {
+  wp_redirect(home_url('/ingresar'));
+  exit;
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
   global $wpdb;
   $tabla = $wpdb->prefix . 'thbr_contratos';
 
-  // Construir tiempo_contrato desde años/meses (si vienen del formulario)
+  // Construir tiempo_contrato desde años/meses
   $anios = isset($_POST['duracion_anios']) ? intval($_POST['duracion_anios']) : 0;
   $meses = isset($_POST['duracion_meses']) ? intval($_POST['duracion_meses']) : 0;
   
@@ -72,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
 }
 ?>
 
-<div style="display: flex; justify-content: space-between; align-items: center; margin: 30px 40px;">
+<div style="max-width:960px; margin:0 auto; padding:20px 0; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; box-sizing:border-box;">
     <!-- Botones a la izquierda -->
-  <div>
+  <div style="justify-self:start;">
     <a href="<?php echo home_url('/panel'); ?>" 
        style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #1c35a5ff;">
        ⚙️ Panel
@@ -85,13 +87,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     </a>
   </div>
 
+  <!-- Logo centrado --> 
+  <div style="justify-self:center;">
+    <img src="<?php echo plugins_url( 'assets/logothbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>"
+    alt="Logo TreeHouse"
+    style="max-width:120px; height:auto;" />
+  </div>
+
     <!-- Usuario activo a la derecha -->
-  <div style="font-weight: 600; color: #1c35a5ff;">
-    <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
+  <div style="justify-self:right; font-weight: 600; color: #1c35a5ff;">
+    <?php echo $usuario ? esc_html($usuario['nombre'] . ' ' . $usuario['apellido']) : 'No hay usuario registrado'; ?>
   </div>
 </div>
 
-<div class="thbr-contrato">
+<div class="thbr-contrato" style="padding-top:0; margin-top:0;">
   <h2>Nuevo Contrato</h2>
 
   <form method="post" class="thbr-form" autocomplete="off">
@@ -343,5 +352,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     document.getElementById('duracion_anios').addEventListener('change', calcularFechaFin);
     document.getElementById('duracion_meses').addEventListener('change', calcularFechaFin);
 </script>
-
-<?php get_footer(); ?>

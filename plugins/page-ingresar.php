@@ -1,8 +1,5 @@
 <?php
-/*
-Template Name: Ingresar
-*/
-get_header();
+// shortcode: [thbr_ingresar]
 
 session_start();
 
@@ -10,7 +7,6 @@ global $wpdb;
 $tabla = $wpdb->prefix . 'thbr_usuarios';
 
 // Procesar login
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['correo'], $_POST['password'])) {
         $correo = sanitize_email($_POST['correo']);
@@ -50,5 +46,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <button type="submit" class="thbr-boton-ingreso">Iniciar sesión</button>
   </form>
 </div>
-
-<?php get_footer(); ?>

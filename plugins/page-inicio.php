@@ -1,13 +1,17 @@
-<?php
-/*
-Template Name: Inicio
-*/
-get_header();
-?>
+<!-- shortcode: [thbr_inicio] -->
 
-<div class="thbr-botones-centrados" style="margin-top:20px;">
+<style>
+  .page-inicio .thbr-botones-centrados {
+    min-height: 100vh;
+  }
+  html, body {
+    overflow-y: hidden;
+  }
+</style>
+
+<div class="thbr-botones-centrados" >
   <!-- Logo institucional -->
-  <img src="<?php echo plugins_url( 'assets/logobrthbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" style="max-width:280px; margin-bottom:0px;"/>
+  <img src="<?php echo plugins_url( 'assets/logothbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" alt="Logo TreeHouse" style="max-width:280px; margin-bottom:0px;"/>
 
   <!-- Misión institucional -->
   <p class="thbr-intro" style="margin-top:0; margin-bottom:10px; line-height:1.4;">
@@ -21,7 +25,3 @@ get_header();
     <a href="<?php echo home_url('/ingresar'); ?>" class="thbr-btn">Iniciar sesión</a>
   </div>
 </div>
-
-<?php
-get_footer();
-?>
