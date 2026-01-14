@@ -43,11 +43,9 @@ add_shortcode('thbr_ingresar', function () {
 add_shortcode('thbr_panel', function () {
     ob_start();
 
-    session_start();
-    $usuario = $_SESSION['thbr_usuario'] ?? null;
-    session_write_close();
+    $id_usuario = get_current_user_id();
     
-    if (!$usuario) {
+    if ($id_usuario <= 0) {
         echo "<div class='thbr-error'>Acceso no autorizado. Iniciá sesión primero.</div>";
         echo "<script>setTimeout(() => window.location.href='" . home_url('/ingresar') . "', 1500);</script>";
         return ob_get_clean();
@@ -72,13 +70,17 @@ add_shortcode('thbr_historial', function () {
 add_shortcode('thbr_editarcontrato', function () {
     ob_start();
 
-    // Control de sesión y acceso
-    session_start();
-    $usuario = $_SESSION['thbr_usuario'] ?? null;
+    $id_usuario = get_current_user_id();
     $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-    session_write_close();
+
+    global $wpdb;
+    $tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
+
+    $usuario = $wpdb->get_row(
+        $wpdb->prepare("SELECT nombre, apellido FROM $tabla_usuarios WHERE id_usuario = %d", $id_usuario)
+        );
     
-    if (!$usuario || !$id) {
+    if (!$usuario || $id <= 0 ) {
         echo "<div class='thbr-error'>Acceso no autorizado.</div>";
         return ob_get_clean();
     }

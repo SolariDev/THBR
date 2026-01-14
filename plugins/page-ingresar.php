@@ -1,27 +1,34 @@
 <?php
 // shortcode: [thbr_ingresar]
 
-session_start();
-
-global $wpdb;
-$tabla = $wpdb->prefix . 'thbr_usuarios';
-
-// Procesar login
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['correo'], $_POST['password'])) {
-        $correo = sanitize_email($_POST['correo']);
-        $password = $_POST['password'];
+    global $wpdb;
 
+    $tabla = $wpdb->prefix . 'thbr_usuarios';
+
+    $correo = sanitize_email($_POST['correo'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    if ($correo && $password) {
         $usuario = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tabla WHERE correo = %s", $correo));
 
         if ($usuario && password_verify($password, $usuario->password)) {
-            $_SESSION['thbr_usuario'] = [
-                'id' => $usuario->id,
-                'nombre' => $usuario->nombre,
-                'apellido' => $usuario->apellido
-            ];
-            echo "<div class='thbr-exito'>Sesión iniciada correctamente.</div>";
-            echo "<script>setTimeout(() => window.location.href='" . home_url('/panel') . "', 1000);</script>";
+            if (!email_exists($correo)) {
+                wp_create_user($correo, $password, $correo);
+            }
+
+            $wp_user = wp_signon([
+                'user_login'    => $correo,
+                'user_password' => $password,
+                'remember'      => $true
+            ], false);
+
+            if(!is_wp_error($wp_user)) {
+                echo "<div class='thbr-exito'>Sesión iniciada correctamente.</div>";
+                echo "<script>setTimeout(() => window.location.href='" . home_url('/panel') . "', 1000);</script>";
+            } else {
+                echo "<div class='thbr-error'>Error al iniciar sesión en WordPress.</div>";
+            }        
         } else {
             echo "<div class='thbr-error'>Credenciales incorrectas.</div>";
         }

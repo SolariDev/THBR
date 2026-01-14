@@ -1,18 +1,50 @@
 <?php
 // shortcode: [thbr_nuevocontrato]
-session_start();
+$id_usuario = get_current_user_id();
 
-$usuario = $_SESSION['thbr_usuario'] ?? null;
-session_write_close();
+$nombre_apellido = '';
 
-if (!$usuario) {
+if ($id_usuario > 0) {
+    global $wpdb;
+    $tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
+
+    $usuario = $wpdb->get_row(
+        $wpdb->prepare("SELECT nombre, apellido FROM $tabla_usuarios WHERE id_usuario = %d", $id_usuario)
+    );
+
+    if ($usuario) {
+        $nombre_apellido = esc_html($usuario->nombre . ' ' . $usuario->apellido);
+    } else {
+        $nombre_apellido = 'Usuario no registrado';
+    }
+} else {
+    $nombre_apellido = 'Sesión no iniciada';
+}
+
+if (!$id_usuario || $id_usuario <= 0) {
   wp_redirect(home_url('/ingresar'));
   exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (!isset($_POST['thbr_nonce']) || !wp_verify_nonce($_POST['thbr_nonce'], 'thbr_nuevocontrato')) {
+        echo "<div class='thbr-error'>Solicitud inválida.</div>";
+        return;
+    }
+
   global $wpdb;
-  $tabla = $wpdb->prefix . 'thbr_contratos';
+  $tabla_contratos = $wpdb->prefix . 'thbr_contratos';
+  $tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
+
+  $existe_usuario = $wpdb->get_var(
+      $wpdb->prepare("SELECT COUNT(*) FROM {$tabla_usuarios} WHERE id_usuario = %d", $id_usuario)
+  );
+
+  if (!$existe_usuario) {
+      echo "<div class='thbr-error'>El usuario no existe en la tabla institucional. ID: " . esc_html($id_usuario) . "</div>";
+      return;
+  }
 
   // Construir tiempo_contrato desde años/meses
   $anios = isset($_POST['duracion_anios']) ? intval($_POST['duracion_anios']) : 0;
@@ -23,18 +55,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     $tiempo_contrato .= $anios . ' año' . ($anios > 1 ? 's' : '');
   }
   if ($meses > 0) {
-    if ($tiempo_contrato !== '') $tiempo_contrato .= ' '; $tiempo_contrato .= $meses . ' mes' . ($meses > 1 ? 'es' : '');
+    if ($tiempo_contrato !== '') $tiempo_contrato .= ' ';
+    $tiempo_contrato .= $meses . ' mes' . ($meses > 1 ? 'es' : '');
   }
   if ($tiempo_contrato === '') {
     $tiempo_contrato = '0 meses';
   }
 
   $link_drive_input = $_POST['link_drive'] ?? '';
-  $link_drive = filter_var($link_drive_input, FILTER_VALIDATE_URL) ? esc_url_raw($link_drive_input) : '';
- 
+  $link_drive = !empty($link_drive_input) ? filter_var($link_drive_input, FILTER_VALIDATE_URL) : '';
+  if (!empty($link_drive_input) && !$link_drive) {
+      echo "<div class='thbr-error'>El link de Drive no es válido.</div>";
+      return;
+  }
+
+  $moneda = isset($_POST['moneda']) ? sanitize_text_field($_POST['moneda']) : '';
 
   $datos = [
-    'id_usuario'      => intval($usuario['id']),
+    'id_usuario'      => $id_usuario,
     'calle'           => sanitize_text_field($_POST['calle'] ?? ''),
     'numero'          => sanitize_text_field($_POST['numero'] ?? ''),
     'manzana'         => sanitize_text_field($_POST['manzana'] ?? ''),
@@ -51,20 +89,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     'inq_apellido'    => sanitize_text_field($_POST['inq_apellido'] ?? ''),
     'inq_telefono'    => sanitize_text_field($_POST['inq_telefono'] ?? ''),
     'inq_mail'        => sanitize_email($_POST['inq_mail'] ?? ''),
-    'precio_alquiler' => isset($_POST['precio_alquiler']) ? floatval($_POST['precio_alquiler']) : null,
-    'moneda'          => sanitize_text_field($_POST['moneda'] ?? ''), 
+    'precio_alquiler' => isset($_POST['precio_alquiler']) ? floatval($_POST['precio_alquiler']) : 0,
+    'moneda'          => $moneda, 
     'garantia'        => sanitize_text_field($_POST['garantia'] ?? ''),
     'duracion_anios'  => $anios,
     'duracion_meses'  => $meses,
     'tiempo_contrato' => $tiempo_contrato,
     'inicio'          => sanitize_text_field($_POST['inicio'] ?? ''),
     'fin'             => sanitize_text_field($_POST['fin'] ?? ''),
-    'link_drive'      => $link_drive ? esc_url_raw($link_drive) : '',
+    'link_drive'      => $link_drive ? esc_url_raw($link_drive_input) : '',
     'tipo_reajuste'   => sanitize_text_field($_POST['tipo_reajuste'] ?? ''),
     'fecha_creacion'  => current_time('mysql')
   ];
 
-  $resultado = $wpdb->insert($tabla, $datos);
+    $formato = [ 
+        '%d', // id_usuario
+        '%s','%s','%s','%s','%s','%s','%s','%s', // dirección
+        '%s','%s','%s','%s', // propietario
+        '%s','%s','%s','%s', // inquilino
+        '%f', // precio_alquiler
+        '%s', // moneda
+        '%s', // garantía
+        '%d','%d','%s', // duración
+        '%s','%s', // inicio, fin
+        '%s', // link_drive
+        '%s', // tipo_reajuste
+        '%s' // fecha_creacion
+    ];
+
+  $resultado = $wpdb->insert($tabla_contratos, $datos, $formato);
 
   if ($resultado !== false){
     echo "<div class='thbr-exito'>Contrato registrado correctamente.</div>";
@@ -89,14 +142,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
 
   <!-- Logo centrado --> 
   <div style="justify-self:center;">
-    <img src="<?php echo plugins_url( 'assets/logothbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>"
+    <img src="<?php echo plugins_url( 'assets/logothbr.png', WP_PLUGIN_DIR . '/thbr/index.php'); ?>"
     alt="Logo TreeHouse"
     style="max-width:120px; height:auto;" />
   </div>
 
     <!-- Usuario activo a la derecha -->
   <div style="justify-self:right; font-weight: 600; color: #1c35a5ff;">
-    <?php echo $usuario ? esc_html($usuario['nombre'] . ' ' . $usuario['apellido']) : 'No hay usuario registrado'; ?>
+    <?php echo $nombre_apellido; ?>
   </div>
 </div>
 
@@ -104,6 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
   <h2>Nuevo Contrato</h2>
 
   <form method="post" class="thbr-form" autocomplete="off">
+    <?php wp_nonce_field('thbr_nuevocontrato', 'thbr_nonce'); ?>
 
   <!-- Propiedad -->
 <fieldset>
@@ -327,8 +381,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
 <script> // script de cálculo automático de fechas 
     function calcularFechaFin() {
       const inicio = document.getElementById('inicio').value;
-      const anios = parseInt(document.getElementById('duracion_anios').value);
-      const meses = parseInt(document.getElementById('duracion_meses').value);
+      const anios = parseInt(document.getElementById('duracion_anios').value) || 0;
+      const meses = parseInt(document.getElementById('duracion_meses').value) || 0;
       
       if (!inicio) return;
       
@@ -351,4 +405,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $usuario) {
     document.getElementById('inicio').addEventListener('change', calcularFechaFin);
     document.getElementById('duracion_anios').addEventListener('change', calcularFechaFin);
     document.getElementById('duracion_meses').addEventListener('change', calcularFechaFin);
+
+    window.addEventListener('DOMContentLoaded', calcularFechaFin);
 </script>

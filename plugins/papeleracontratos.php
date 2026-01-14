@@ -1,22 +1,24 @@
 <?php
 // shortcode: [thbr_papelera]
-session_start();
+$id_usuario = get_current_user_id();
 
-$usuario = $_SESSION['thbr_usuario'] ?? null;
-session_write_close();
+global $wpdb;
+$tabla = $wpdb->prefix . 'thbr_contratos';
+$tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
 
-if (!$usuario) {
+$usuario = $wpdb->get_row(
+    $wpdb->prepare("SELECT nombre, apellido FROM $tabla_usuarios WHERE id_usuario = %d", $id_usuario)
+    );
+
+if (!$usuario || $id_usuario <= 0) {
   wp_redirect(home_url('/ingresar'));
   exit;
 }
 
-global $wpdb;
-$tabla = $wpdb->prefix . 'thbr_contratos';
-
 // Acción restaurar
 if (isset($_GET['accion']) && $_GET['accion'] === 'restaurar' && !empty($_GET['id'])) {
   $id = intval($_GET['id']);
-  $resultado = $wpdb->update($tabla, ['papelera' => 0], ['id' => $id]);
+  $resultado = $wpdb->update($tabla, ['papelera' => 0], ['id' => $id, 'id_usuario' => $id_usuario]);
 
   if ($resultado !== false) {
     echo "<div class='thbr-exito'>Contrato con ID $id restaurado correctamente.</div>";
@@ -28,7 +30,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'restaurar' && !empty($_GET['i
 // Acción eliminar definitiva
 if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id'])) {
   $id = intval($_GET['id']);
-  $resultado = $wpdb->delete($tabla, ['id' => $id, 'id_usuario' => $usuario['id']]);
+  $resultado = $wpdb->delete($tabla, ['id' => $id, 'id_usuario' => $id_usuario]);
   
   if ($resultado > 0) {
     echo "<div class='thbr-exito'>Contrato con ID $id eliminado definitivamente.</div>";
@@ -39,7 +41,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'eliminar' && !empty($_GET['id
 
 // Traer contratos en papelera del usuario actual
 $contratos = $wpdb->get_results(
-  $wpdb->prepare("SELECT * FROM $tabla WHERE id_usuario = %d AND papelera = 1 ORDER BY fin ASC", $usuario['id'])
+  $wpdb->prepare("SELECT * FROM $tabla WHERE id_usuario = %d AND papelera = 1 ORDER BY fin ASC", $id_usuario)
 );
 ?>
 
@@ -62,7 +64,7 @@ $contratos = $wpdb->get_results(
   </div>
 
   <div style="justify-self:right; font-weight: 600; color: #1c35a5ff;">
-    <?php echo esc_html($usuario['nombre'] . ' ' . $usuario['apellido']); ?>
+    <?php echo $usuario ? esc_html($usuario->nombre . ' ' . $usuario->apellido) : 'No hay usuario registrado'; ?>
   </div>
 </div>
 

@@ -5,16 +5,42 @@ $tabla = $wpdb->prefix . 'thbr_contratos';
 $contrato = $wpdb->get_row($wpdb->prepare(
   "SELECT * FROM $tabla WHERE id = %d AND id_usuario = %d",
   $id,
-  $usuario['id']
+  $id_usuario
 ));
 
 if (!$contrato) {
   echo "<div class='thbr-error'>Contrato no encontrado.</div>";
+  return;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-  $link_drive = !empty($_POST['link_drive']) ? filter_var($_POST['link_drive'], FILTER_VALIDATE_URL) : '';
+    if (!isset($_POST['thbr_nonce']) || !wp_verify_nonce($_POST['thbr_nonce'], 'thbr_editar_contrato')) {
+        echo "<div class='thbr-error'>Solicitud inválida.</div>";
+        return;
+        }
+
+    $anios = isset($_POST['duracion_anios']) ? intval($_POST['duracion_anios']) : 0;
+    $meses = isset($_POST['duracion_meses']) ? intval($_POST['duracion_meses']) : 0;
+
+    $tiempo_contrato = '';
+    if ($anios > 0) {
+        $tiempo_contrato .= $anios . ' año' . ($anios > 1 ? 's' : '');
+    }
+    if ($meses > 0) {
+        if ($tiempo_contrato !== '') $tiempo_contrato .= ' ';
+        $tiempo_contrato .= $meses . ' mes' . ($meses > 1 ? 'es' : '');
+    }
+    if ($tiempo_contrato === '') {
+        $tiempo_contrato = '0 meses';
+    }
+
+  $link_drive_input = $_POST['link_drive'] ?? '';
+  $link_drive = !empty($link_drive_input) ? filter_var($link_drive_input, FILTER_VALIDATE_URL) : '';
+  if (!empty($link_drive_input) && !$link_drive) {
+    echo "<div class='thbr-error'>El link de Drive no es válido.</div>";
+    return;
+  }
 
   $datos = [
     'calle'           => sanitize_text_field($_POST['calle'] ?? ''), 
@@ -33,20 +59,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     'inq_apellido'    => sanitize_text_field($_POST['inq_apellido'] ?? ''),
     'inq_telefono'    => sanitize_text_field($_POST['inq_telefono'] ?? ''),
     'inq_mail'        => sanitize_email($_POST['inq_mail'] ?? ''),
-    'precio_alquiler' => isset($_POST['precio_alquiler']) ? floatval($_POST['precio_alquiler']) : null,
+    'precio_alquiler' => isset($_POST['precio_alquiler']) ? floatval($_POST['precio_alquiler']) : 0,
     'moneda'          => sanitize_text_field($_POST['moneda'] ?? ''),
     'garantia'        => sanitize_text_field($_POST['garantia'] ?? ''),
-    'tiempo_contrato' => sanitize_text_field($_POST['tiempo_contrato'] ?? ''),
+    'duracion_anios'  => $anios,
+    'duracion_meses'  => $meses,
+    'tiempo_contrato' => $tiempo_contrato,
     'inicio'          => sanitize_text_field($_POST['inicio'] ?? ''),
     'fin'             => sanitize_text_field($_POST['fin'] ?? ''),
-    'link_drive'      => $link_drive ? esc_url_raw($link_drive) : '',
+    'link_drive'      => $link_drive ? esc_url_raw($link_drive_input) : '',
     'tipo_reajuste'   => sanitize_text_field($_POST['tipo_reajuste'] ?? '')
   ];
 
-  $wpdb->update($tabla, $datos, ['id' => $id]);
+  $resultado = $wpdb->update($tabla, $datos, ['id' => $id]);
 
-  echo "<div class='thbr-exito'>Contrato actualizado correctamente.</div>";
-  echo "<script>setTimeout(() => window.location.href='" . home_url('/historial') . "', 800);</script>";
+  if ($resultado !== false) {
+    echo "<div class='thbr-exito'>Contrato actualizado correctamente.</div>";
+    wp_redirect(home_url('/historial'));
+    exit;
+  } else {
+    echo "<div class='thbr-error'>No se pudo actualizar el contrato.</div>";
+  } 
 }
 ?>
 
@@ -60,14 +93,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 
   <div style="justify-self:center;">
-  <img src="<?php echo plugins_url( 'assets/logothbr.png', WP_PLUGIN_DIR . '/thbr/index.php' ); ?>" 
+  <img src="<?php echo plugins_url('assets/logothbr.png', WP_PLUGIN_DIR . '/thbr/index.php'); ?>" 
        alt="Logo TreeHouse" 
        style="max-width:120px; height:auto;" />
   </div>
 
   <!-- Usuario activo a la derecha -->
   <div style="justify-self:right; font-weight:600; color: #1c35a5ff;">
-    <?php echo esc_html($usuario['nombre'].' '.$usuario['apellido']); ?>
+    <?php echo esc_html($usuario->nombre . ' ' . $usuario->apellido); ?>
   </div>
 </div>
 
@@ -75,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <h2>Editar Contrato</h2>
 
   <form method="post" class="thbr-form" autocomplete="off">
+    <?php wp_nonce_field('thbr_editar_contrato', 'thbr_nonce'); ?>
 
     <!-- Propiedad -->
    
@@ -112,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <label for="departamento">Departamento</label>
       <select id="departamento" name="departamento" required>
       <?php
-        $departamentos = ['Montevideo','Canelones','Maldonado','Colonia','San José','Soriano','Flores','Florida','Durazno','Lavalleja','Treinta y Tres','Rocha','Rivera','Tacuarembó','Artigas','Paysandú','Salto', 'Cerro Largo', 'Río Negro'];
+        $departamentos = ['Artigas','Canelones','Cerro Largo','Colonia','Durazno','Flores','Florida','Lavalleja','Maldonado','Montevideo','Paysandú','Río Negro','Rivera','Rocha','Salto','San José','Soriano','Tacuarembó','Treinta y Tres'];
         foreach ($departamentos as $d) {
           echo '<option value="'.esc_attr($d).'" '.selected($contrato->departamento ?? '', $d, false).'>'.$d.'</option>';
         }
@@ -235,7 +269,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <select id="duracion_anios" name="duracion_anios">
         <?php for ($i=0; $i<=5; $i++): ?>
           <option value="<?php echo $i; ?>" <?php selected($contrato->duracion_anios ?? '', $i); ?>>
-            <?php echo $i === 0 ? '0' : $i.' año'.($i>1?'s':''); ?>
+            <?php 
+                if ($i === 0) {
+                    echo '0';
+                } else {
+                    echo $i.' año'.($i>1?'s':''); 
+                }
+            ?>
           </option>
         <?php endfor; ?>
       </select>
@@ -270,7 +310,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Link Drive -->
   <div class="thbr-campo">
     <label for="link_drive">Link de carpeta Drive</label>
-    <input type="url" name="link_drive" 
+    <input type="url" id="link_drive" name="link_drive" 
            placeholder="https://..."
            value="<?php echo esc_attr($contrato->link_drive ?? ''); ?>">
 
@@ -291,8 +331,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script>
 function calcularFechaFin() {
   const inicio = document.getElementById('inicio').value;
-  const anios = parseInt(document.getElementById('duracion_anios').value);
-  const meses = parseInt(document.getElementById('duracion_meses').value);
+  const anios = parseInt(document.getElementById('duracion_anios').value) || 0;
+  const meses = parseInt(document.getElementById('duracion_meses').value) || 0;
 
   if (!inicio) return;
 
@@ -315,4 +355,6 @@ function calcularFechaFin() {
 document.getElementById('inicio').addEventListener('change', calcularFechaFin);
 document.getElementById('duracion_anios').addEventListener('change', calcularFechaFin);
 document.getElementById('duracion_meses').addEventListener('change', calcularFechaFin);
+
+window.addEventListener('DOMContentLoaded', calcularFechaFin);
 </script>

@@ -22,6 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'correo'   => $correo,
                 'password' => $password
             ]);
+
+            $id_usuario = $wpdb->insert_id;
+
+            session_start();
+            $_SESSION['thbr_usuario'] = $id_usuario;
+            session_write_close();
+
             echo "<div class='thbr-exito'>Usuario registrado correctamente.</div>";
         } else {
             echo "<div class='thbr-error'>El correo ya está registrado.</div>";

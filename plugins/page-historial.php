@@ -1,13 +1,15 @@
 <?php
 // shortcode: [thbr_historial]
-session_start();
+$id_usuario = get_current_user_id();
 
-$usuario = $_SESSION['thbr_usuario'] ?? null;
-session_write_close();
-
-if ($usuario) {
+if ($id_usuario >= 0) {
   global $wpdb;
   $tabla = $wpdb->prefix . 'thbr_contratos';
+  $tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
+
+  $usuario = $wpdb->get_row(
+      $wpdb->prepare("SELECT nombre, apellido FROM $tabla_usuarios WHERE id_usuario = %d", $id_usuario)
+  );
 
 if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id'])) {
       $id = intval($_GET['id']);
@@ -25,19 +27,20 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
   }
 
   $contratos = $wpdb->get_results(
-    $wpdb->prepare("SELECT * FROM $tabla WHERE id_usuario = %d AND papelera = 0 ORDER BY fin ASC", $usuario['id'])
+    $wpdb->prepare("SELECT * FROM $tabla WHERE id_usuario = %d AND papelera = 0 ORDER BY fin ASC", $id_usuario)
   );
 }
 ?>
 
-<div style="max-width:960px; margin:0 auto; padding:20px 0; display:grid; grid-template-columns:1fr auto 1fr;                   align-items:center; box-sizing:border-box;">
+<div style="max-width:960px; margin:0 auto; padding:20px 0; display:grid; grid-template-columns:1fr auto 1fr; 
+    align-items:center; box-sizing:border-box;">
     <!-- Botones a la izquierda -->
   <div style="justify-self:start;">
     <a href="<?php echo home_url('/panel'); ?>" 
        style="margin-right: 12px; font-weight: 600; text-decoration: none; color: #1c35a5ff;">
        ⚙️ Panel
     </a>
-    <a href="<?php echo home_url('/papeleracontratos'); ?>"
+    <a href="<?php echo home_url('/papelera'); ?>"
     style="font-weight: 600; text-decoration: none; color: #1c35a5ff;">
     🗑️ Ver Papelera
     </a>
@@ -51,7 +54,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
 
     <!-- Usuario activo a la derecha -->
   <div style="justify-self:right; font-weight: 600; color: #1c35a5ff;">
-    <?php echo $usuario ? esc_html($usuario['nombre'] . ' ' . $usuario['apellido']) : 'No hay usuario registrado'; ?>
+    <?php echo $usuario ? esc_html($usuario->nombre . ' ' . $usuario->apellido) : 'No hay usuario registrado'; ?>
   </div>
 </div>
 
@@ -129,11 +132,12 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
 
 
           // Monto y moneda
-          $monto = '';
-          if (!empty($c->precio_alquiler) && !empty($c->moneda)) {
-            $monto = $c->precio_alquiler . ' ' . $c-> moneda;
-          }
-
+          $monto = number_format($c->precio_alquiler, 0, ',', '.');
+          if ($c->moneda === 'UYU') {
+            $monto .= ' $U';
+          } elseif ($c->moneda === 'USD') {
+            $monto .= ' $USD';
+        }
         ?>
           <tr style="<?php echo $estilo; ?>">
             <td><?php echo esc_html($c->id); ?></td>
