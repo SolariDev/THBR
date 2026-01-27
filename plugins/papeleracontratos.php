@@ -1,6 +1,10 @@
 <?php
 // shortcode: [thbr_papelera]
-$id_usuario = get_current_user_id();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$id_usuario = $_SESSION['thbr_usuario'] ?? 0;
 
 global $wpdb;
 $tabla = $wpdb->prefix . 'thbr_contratos';
@@ -9,12 +13,7 @@ $tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
 $usuario = $wpdb->get_row(
     $wpdb->prepare("SELECT nombre, apellido FROM $tabla_usuarios WHERE id_usuario = %d", $id_usuario)
     );
-
-if (!$usuario || $id_usuario <= 0) {
-  wp_redirect(home_url('/ingresar'));
-  exit;
-}
-
+    
 // Acción restaurar
 if (isset($_GET['accion']) && $_GET['accion'] === 'restaurar' && !empty($_GET['id'])) {
   $id = intval($_GET['id']);

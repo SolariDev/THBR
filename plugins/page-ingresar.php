@@ -1,5 +1,6 @@
 <?php
 // shortcode: [thbr_ingresar]
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     global $wpdb;
@@ -12,30 +13,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($correo && $password) {
         $usuario = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tabla WHERE correo = %s", $correo));
 
-        if ($usuario && password_verify($password, $usuario->password)) {
-            if (!email_exists($correo)) {
-                wp_create_user($correo, $password, $correo);
-            }
+        if ($usuario && password_verify($password, $usuario->password)) {            
+            $_SESSION['thbr_usuario'] = $usuario->id_usuario;
 
-            $wp_user = wp_signon([
-                'user_login'    => $correo,
-                'user_password' => $password,
-                'remember'      => $true
-            ], false);
+                wp_set_current_user($usuario->id_usuario);
+                wp_set_auth_cookie($usuario->id_usuario);
 
-            if(!is_wp_error($wp_user)) {
                 echo "<div class='thbr-exito'>Sesión iniciada correctamente.</div>";
                 echo "<script>setTimeout(() => window.location.href='" . home_url('/panel') . "', 1000);</script>";
             } else {
-                echo "<div class='thbr-error'>Error al iniciar sesión en WordPress.</div>";
-            }        
+                echo "<div class='thbr-error'>Credenciales incorrectas.</div>";
+            } 
         } else {
-            echo "<div class='thbr-error'>Credenciales incorrectas.</div>";
+            echo "<div class='thbr-error'>Faltan campos obligatorios.</div>"; 
         }
-    } else {
-        echo "<div class='thbr-error'>Faltan campos obligatorios.</div>";
     }
-}
 ?>
 
   <!-- Vista institucional del login -->

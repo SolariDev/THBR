@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'HELLO_ELEMENTOR_VERSION', '3.4.5' );
+define( 'HELLO_ELEMENTOR_VERSION', '3.4.6' );
 define( 'EHP_THEME_SLUG', 'hello-elementor' );
 
 define( 'HELLO_THEME_PATH', get_template_directory() );
@@ -237,14 +237,25 @@ if ( ! function_exists( 'hello_elementor_customizer' ) ) {
 }
 add_action( 'init', 'hello_elementor_customizer' );
 
-// 🔒 Iniciar sesión global en WordPress
-add_action('init', function() {
-    if (!session_id()) {
-		if (is_page(['panel', 'nuevocontrato', 'editarcontrato', 'historial'])){
-        session_start();
+if ( ! function_exists( 'hello_elementor_check_hide_title' ) ) {
+	/**
+	 * Check whether to display the page title.
+	 *
+	 * @param bool $val default value.
+	 *
+	 * @return bool
+	 */
+	function hello_elementor_check_hide_title( $val ) {
+		if ( defined( 'ELEMENTOR_VERSION' ) ) {
+			$current_doc = Elementor\Plugin::instance()->documents->get( get_the_ID() );
+			if ( $current_doc && 'yes' === $current_doc->get_settings( 'hide_title' ) ) {
+				$val = false;
+			}
 		}
-    }
-});
+		return $val;
+	}
+}
+add_filter( 'hello_elementor_page_title', 'hello_elementor_check_hide_title' );
 
 /**
  * BC:

@@ -1,8 +1,13 @@
 <?php
 // shortcode: [thbr_historial]
-$id_usuario = get_current_user_id();
 
-if ($id_usuario >= 0) {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$id_usuario = $_SESSION['thbr_usuario'] ?? 0;
+
+if ($id_usuario > 0) {
   global $wpdb;
   $tabla = $wpdb->prefix . 'thbr_contratos';
   $tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
@@ -41,8 +46,8 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
        ⚙️ Panel
     </a>
     <a href="<?php echo home_url('/papelera'); ?>"
-    style="font-weight: 600; text-decoration: none; color: #1c35a5ff;">
-    🗑️ Ver Papelera
+       style="font-weight: 600; text-decoration: none; color: #1c35a5ff;">
+       🗑️ Ver Papelera
     </a>
   </div>
 
@@ -105,7 +110,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
             color:#fff;';
           } 
 
-          // Dirección completa con apto y garage si existen
+          // Dirección completa
           $direccionCompleta = $c->calle;
 
           if (!empty($c->numero)) {

@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'elementor/hello-theme',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => '2ebc4a4f9c7b97091ec3de16f20a83adde79c1c9',
+        'pretty_version' => 'dev-TMZ-1013-deploy',
+        'version' => 'dev-TMZ-1013-deploy',
+        'reference' => '3cf050127006fe4a7284dcfa6cd9928da6ce878e',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'elementor/hello-theme' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => '2ebc4a4f9c7b97091ec3de16f20a83adde79c1c9',
+            'pretty_version' => 'dev-TMZ-1013-deploy',
+            'version' => 'dev-TMZ-1013-deploy',
+            'reference' => '3cf050127006fe4a7284dcfa6cd9928da6ce878e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

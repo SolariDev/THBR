@@ -29,7 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['thbr_usuario'] = $id_usuario;
             session_write_close();
 
-            echo "<div class='thbr-exito'>Usuario registrado correctamente.</div>";
+            echo "<div class='thbr-exito'>Usuario registrado correctamente. Por favor inicia sesión.</div>";
+            echo "<script>
+                    setTimeout(function(){
+                        window.location.href = '" . home_url('ingresar') . "';
+                    }, 3000);
+                  </script>";
+
         } else {
             echo "<div class='thbr-error'>El correo ya está registrado.</div>";
         }

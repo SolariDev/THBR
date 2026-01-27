@@ -43,7 +43,8 @@ add_shortcode('thbr_ingresar', function () {
 add_shortcode('thbr_panel', function () {
     ob_start();
 
-    $id_usuario = get_current_user_id();
+    session_start();
+    $id_usuario = $_SESSION['thbr_usuario'] ?? 0;
     
     if ($id_usuario <= 0) {
         echo "<div class='thbr-error'>Acceso no autorizado. Iniciá sesión primero.</div>";
@@ -70,7 +71,8 @@ add_shortcode('thbr_historial', function () {
 add_shortcode('thbr_editarcontrato', function () {
     ob_start();
 
-    $id_usuario = get_current_user_id();
+    session_start();
+    $id_usuario = $_SESSION['thbr_usuario'] ?? 0;
     $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
     global $wpdb;

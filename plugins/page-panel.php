@@ -7,7 +7,9 @@
 </style>
 
 <?php
-$id_usuario = get_current_user_id();
+session_start();
+
+$id_usuario = $_SESSION['thbr_usuario'] ?? 0;
 $nombre_apellido = '';
 
 if($id_usuario > 0) {
@@ -46,7 +48,7 @@ if($id_usuario > 0) {
 </div>
 
 <div style="position: absolute; bottom: 30px; left: 30px;">
-  <a href="<?php echo home_url('/ingresar'); ?>" 
+  <a href="<?php echo home_url('/inicio'); ?>" 
      style="display: inline-block; font-size: 1rem; font-weight: 600; color: #2c3e50; text-decoration: none; 
             background-color: #bdc3c7;
             padding: 10px 18px; border-radius: 6px; 

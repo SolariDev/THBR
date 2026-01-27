@@ -1,30 +1,24 @@
 <?php
 // shortcode: [thbr_nuevocontrato]
-$id_usuario = get_current_user_id();
 
-$nombre_apellido = '';
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-if ($id_usuario > 0) {
-    global $wpdb;
-    $tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
+$id_usuario = $_SESSION['thbr_usuario'] ?? 0;
 
-    $usuario = $wpdb->get_row(
-        $wpdb->prepare("SELECT nombre, apellido FROM $tabla_usuarios WHERE id_usuario = %d", $id_usuario)
-    );
+global $wpdb;
+$tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
 
-    if ($usuario) {
-        $nombre_apellido = esc_html($usuario->nombre . ' ' . $usuario->apellido);
-    } else {
+$usuario = $wpdb->get_row(
+    $wpdb->prepare("SELECT nombre, apellido FROM $tabla_usuarios WHERE id_usuario = %d", $id_usuario)
+);
+
+if ($usuario) {
+    $nombre_apellido = esc_html($usuario->nombre . ' ' . $usuario->apellido);
+} else {
         $nombre_apellido = 'Usuario no registrado';
     }
-} else {
-    $nombre_apellido = 'Sesión no iniciada';
-}
-
-if (!$id_usuario || $id_usuario <= 0) {
-  wp_redirect(home_url('/ingresar'));
-  exit;
-}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -32,11 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<div class='thbr-error'>Solicitud inválida.</div>";
         return;
     }
-
-  global $wpdb;
+    
   $tabla_contratos = $wpdb->prefix . 'thbr_contratos';
-  $tabla_usuarios = $wpdb->prefix . 'thbr_usuarios';
-
+ 
   $existe_usuario = $wpdb->get_var(
       $wpdb->prepare("SELECT COUNT(*) FROM {$tabla_usuarios} WHERE id_usuario = %d", $id_usuario)
   );
