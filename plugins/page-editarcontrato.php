@@ -250,7 +250,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <label for="garantia">Garantía</label>
     <select id="garantia" name="garantia" required>
       <?php
-      $garantias = ['PORTO SEGURO','MAPFRE','SURA','ANDA','CGM','DEPÓSITO EN BHU','PROPIEDAD'];
+      $garantias = ['SANCOR','PORTO SEGURO','MAPFRE','SURA','ANDA','CGM','DEPÓSITO EN BHU','PROPIEDAD'];
       foreach ($garantias as $g) {
         echo '<option value="'.esc_attr($g).'" '.selected($contrato->garantia ?? '', $g, false).'>'.$g.'</option>';
       }

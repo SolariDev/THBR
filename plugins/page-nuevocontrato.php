@@ -301,6 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="thbr-campo">
     <label for="garantia">Garantía</label>
     <select id="garantia" name="garantia" required>
+      <option>SANCOR</option>
       <option>PORTO SEGURO</option>
       <option>MAPFRE</option>
       <option>SURA</option>
