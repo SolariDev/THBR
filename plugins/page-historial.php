@@ -66,7 +66,66 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
 <div class="thbr-historial" style="padding-top:0;">
   <h2>Historial de Contratos</h2>
 
-  <?php if (!empty($contratos)): ?>
+  <!-- ✅ Formulario de búsqueda -->
+  <form method="get" action="" style="margin-bottom: 15px; text-align:center;">
+    <input type="text" name="q"
+             placeholder="Buscar por dirección, propietario o inquilino"
+             style="padding:6px 10px; width:300px;">
+    <button type="submit"
+            style="padding:6px 12px; margin-left:6px; background:#1c35a5ff; color:#fff; border:none; border-radius:4px; font-weight:600;">
+      🔍 Buscar Contratos
+    </button>
+
+  <!-- ✅ Botón para volver al historial completo -->
+  <a href="<?php echo site_url('/historial'); ?>" 
+     style="padding:6px 12px; margin-left:6px; background:#1c35a5ff; color:#fff; border:none; border-radius:4px; font-weight:600; text-decoration:none;">
+     📁 Ver todos
+  </a>
+  </form>
+
+  <!-- ✅ Lógica de filtrado -->
+  <?php
+  $q = isset($_GET['q']) ? trim($_GET['q']) : '';
+  $contratosFiltrados = [];
+
+  if (!empty($contratos)) {
+      foreach ($contratos as $c) {
+          $direccionCompleta = $c->calle;
+          if (!empty($c->numero)) {
+              $direccionCompleta .= ' Nº ' . $c->numero;
+          }
+          if (!empty($c->manzana)) {
+              $direccionCompleta .= ' M.' . $c->manzana;
+          }
+          if (!empty($c->solar)) {
+              $direccionCompleta .= ' S.' . $c->solar;
+          }
+
+          $direccionCompleta .= ', ' . $c->barrio . ', ' . $c->departamento;
+
+          if (!empty($c->apartamento)) {
+              $direccionCompleta .= ' - Apto: ' . $c->apartamento;
+          }
+          if (!empty($c->garage)) {
+              $direccionCompleta .= ' - Garage ' . $c->garage;
+          }
+
+          // Propietario e inquilino
+          $propietario = $c->prop_nombre . ' ' . $c->prop_apellido;
+          $inquilino   = $c->inq_nombre . ' ' . $c->inq_apellido;
+
+          // Filtrado
+          if ($q === ''
+              || stripos($direccionCompleta, $q) !== false
+              || stripos($propietario, $q) !== false
+              || stripos($inquilino, $q) !== false) {
+              $contratosFiltrados[] = $c;
+          }
+      }
+  }
+  ?>
+
+  <?php if (!empty($contratosFiltrados)): ?>
     <table class="thbr-tabla">
       <thead>
         <tr>
@@ -83,7 +142,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
         </tr>
       </thead>
       <tbody>
-        <?php foreach ($contratos as $c): 
+        <?php foreach ($contratosFiltrados as $c): 
           $hoy = new DateTime();
           $fin = new DateTime($c->fin);
           $diff = $hoy->diff($fin)->days;
@@ -132,12 +191,12 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
           }
 
           if (!empty($c->garage)) {
-            $direccionCompleta .= ' - Garage: ' . $c->garage;
+            $direccionCompleta .= ' - Garage ' . $c->garage;
           }
-
 
           // Monto y moneda
           $monto = number_format($c->precio_alquiler, 0, ',', '.');
+
           if ($c->moneda === 'UYU') {
             $monto .= ' $U';
           } elseif ($c->moneda === 'USD') {
@@ -146,10 +205,16 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
         ?>
           <tr style="<?php echo $estilo; ?>">
             <td><?php echo esc_html($c->id); ?></td>
-            <td><?php echo esc_html($direccionCompleta); ?></td>
+            <td class="td-direccion" title="<?php echo esc_html($direccionCompleta); ?>">
+              <?php 
+                $direccionResumida = mb_substr($direccionCompleta, 0, 40);
+                $direccionResumida = preg_replace('/\s+\S*$/u', '', $direccionResumida);
+                echo esc_html($direccionResumida . '...');
+              ?>
+            </td>
             <td><?php echo esc_html($c->prop_nombre . ' ' . $c->prop_apellido); ?></td>
             <td><?php echo esc_html($c->inq_nombre . ' ' . $c->inq_apellido); ?></td>
-            <td><?php echo esc_html($monto); ?></td>
+            <td class="td-monto"><?php echo esc_html($monto); ?></td>
             <td><?php echo esc_html($c->tipo_reajuste); ?></td>
             <td><?php echo esc_html($c->garantia); ?></td>
             <td><?php echo date('d/m/Y', strtotime($c->inicio)); ?></td>
@@ -173,6 +238,10 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
       </tbody>
     </table>
   <?php else: ?>
-    <p>No hay contratos registrados.</p>
-  <?php endif; ?>
+    <?php if (empty($contratos)): ?>
+        <p>No hay contratos registrados.</p>
+    <?php else: ?>
+        <p>No se encontraron resultados para la búsqueda.</p>
+    <?php endif; ?>
+    <?php endif; ?>
 </div>

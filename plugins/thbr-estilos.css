@@ -574,3 +574,18 @@ select option:active {
   height: 20px;
   cursor: pointer;
 }
+
+/* ============================
+   Ajustes específicos de columnas
+   ============================ */
+
+.td-monto {
+  white-space: nowrap;   /* evita que el número y la moneda se separen en dos líneas */
+}
+
+.td-direccion { 
+  width: 550px;    
+  overflow: hidden;
+  white-space: normal;
+}
+
