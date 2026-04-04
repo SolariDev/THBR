@@ -10,8 +10,8 @@ use PHPMailer\PHPMailer\Exception;
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // para pruebas en local
         $mail->SMTPAuth = true;
-        $mail->Username = 'pruebassolaridev@gmail.com'; 
-        $mail->Password = 'xygccbzpmvotwzai';    
+        $mail->Username = getenv('SMTP_USER'); 
+        $mail->Password = getenv('SMTP_PASS');    
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587;
 

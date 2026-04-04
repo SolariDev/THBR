@@ -34,8 +34,8 @@ function thbr_cambiar_password_shortcode() {
                     $mail->isSMTP();
                     $mail->Host       = 'smtp.gmail.com';
                     $mail->SMTPAuth   = true;
-                    $mail->Username   = 'pruebassolaridev@gmail.com';
-                    $mail->Password   = 'xygccbzpmvotwzai';
+                    $mail->Username   = getenv('SMTP_USER');
+                    $mail->Password   = getenv('SMTP_PASS');
                     $mail->SMTPSecure = 'tls';
                     $mail->Port       = 587;
                     $mail->CharSet    = 'UTF-8';
