@@ -66,7 +66,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
 <div class="thbr-historial" style="padding-top:0;">
   <h2>Historial de Contratos</h2>
 
-  <!-- ✅ Formulario de búsqueda -->
+  <!-- Formulario de búsqueda -->
   <form method="get" action="" style="margin-bottom: 15px; text-align:center;">
     <input type="text" name="q"
              placeholder="Buscar por dirección, propietario o inquilino"
@@ -76,14 +76,14 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
       🔍 Buscar Contratos
     </button>
 
-  <!-- ✅ Botón para volver al historial completo -->
+  <!-- Botón para volver al historial completo -->
   <a href="<?php echo site_url('/historial'); ?>" 
      style="padding:6px 12px; margin-left:6px; background:#1c35a5ff; color:#fff; border:none; border-radius:4px; font-weight:600; text-decoration:none;">
      📁 Ver todos
   </a>
   </form>
 
-  <!-- ✅ Lógica de filtrado -->
+  <!-- Lógica de filtrado -->
   <?php
   $q = isset($_GET['q']) ? trim($_GET['q']) : '';
   $contratosFiltrados = [];
@@ -198,9 +198,9 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
           $monto = number_format($c->precio_alquiler, 0, ',', '.');
 
           if ($c->moneda === 'UYU') {
-            $monto .= ' $U';
+            $monto = '$U ' . $monto;
           } elseif ($c->moneda === 'USD') {
-            $monto .= ' $USD';
+            $monto = '$USD ' . $monto;
         }
         ?>
           <tr style="<?php echo $estilo; ?>">

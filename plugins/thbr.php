@@ -102,3 +102,6 @@ add_shortcode('thbr_cerrarsesion', function () {
     include plugin_dir_path(__FILE__) . 'cerrarsesion.php';
     return ob_get_clean();
 });
+
+require_once plugin_dir_path(__FILE__) . 'cambiar-password.php';
+require_once plugin_dir_path(__FILE__) . 'nueva-password.php';

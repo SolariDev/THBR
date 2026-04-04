@@ -1,0 +1,16 @@
+{
+    "name": "thbr/alertas",
+    "description": "Sistema de alertas por mail según cercanía de vencimiento de contrato de alquiler",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^7.0"
+    },
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Gabriel Solari",
+            "email": "gabrielsolari75@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}

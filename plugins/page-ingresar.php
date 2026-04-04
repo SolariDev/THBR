@@ -42,6 +42,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <input type="password" id="password" name="password" required placeholder="Contraseña" autocomplete="new-password" autocorrect="off" autocapitalize="none" spellcheck="false">
 
-    <button type="submit" class="thbr-boton-ingreso">Iniciar sesión</button>
-  </form>
+    <button type="submit" class="thbr-boton-ingreso" style="margin: 0 auto 8px;">Iniciar sesión</button>
+
+    <div class="thbr-link thbr-registro">
+        <a href="<?php echo home_url('/cambiar-password'); ?>" class="enlace-ingreso">¿Olvidaste tu contraseña?</a>
+    </div>
+  </form>        
 </div>
+
+<style>
+    .thbr-ingreso form .thbr-link {
+        margin: o !important;
+        padding: 0 !important;
+        line-height: 1 !important;
+        display: inline-block !important;
+    }
+</style>
