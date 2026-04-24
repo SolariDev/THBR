@@ -31,6 +31,46 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
       }
   }
 
+  // Acción para Notas
+  if (isset($_GET['accion']) && $_GET['accion'] === 'notas' && !empty($_GET['id'])) {
+      $contrato_id = intval($_GET['id']);
+      $contrato = $wpdb->get_row($wpdb->prepare("SELECT * FROM $tabla WHERE id = %d", $contrato_id));
+
+      if (isset($_POST['guardar_nota'])) {
+          $resultado = $wpdb->update(
+            $tabla,
+            ['notas' => $_POST['notas']],
+            ['id' => $contrato_id]
+          );
+          if ($resultado !== false) {
+            echo "<script>alert('✅ Nota guardada correctamente');window.location='" . site_url('/historial') . "';</script>";
+          } else {
+            echo "<div class='thbr-error'>No se pudo guardar la nota.</div>";
+          }
+        }
+        ?>
+        <!-- Generar Modal de Notas con estilos -->
+        <div id="modalNotas" class="modal" style="display:none;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;background-color:rgba(0,0,0,0.4);"> 
+          <div class="modal-contenido" style="background: #fff url('/wordpress/wp-content/plugins/thbr/assets/logothbr.png') no-repeat right bottom; background-size:80px auto;margin:5% auto;padding: 30px;border-radius: 8px;width:70%;max-width:800px;box-shadow:0 0 15px rgba(0,0,0,0.3);text-align:left;font-family:'Montserrat',sans-serif;">
+          <h2 style="font-size:20px;font-weight:600;margin-bottom:16px;color: #0056B3;">Notas del contrato #<?php echo      $contrato_id; ?>
+          </h2>
+            <form method="post">
+              <textarea name="notas" rows="3" cols="40" style="width:100%;font-family:'Montserrat',sans-serif;font-size:14px;padding:10px;border:1px solid #ddd;border-radius:8px;resize:vertical;min-height:120px;background-color:rgba(255,255,255,0.9);color: #333;"><?php echo esc_textarea($contrato->notas); ?></textarea>
+              <br>
+              <button type="submit" name="guardar_nota" style="background-color: #0056B3;color: #fff;border:none;border-radius:8px;padding:8px 14px;font-size:16px;font-weight:500;font-family:'Montserrat',sans-serif;cursor:pointer;margin-top:12px;margin-right:10px;">Guardar</button>
+              <button type="button" onclick="cerrarModal()" style="background-color: #0056B3;color: #fff;border:none;border-radius:8px;padding:8px 14px;font-size:16px;font-weight:500;font-family:'Montserrat',sans-serif;cursor:pointer;margin-top:12px;margin-right:10px;">Cerrar</button>
+            </form>
+          </div>
+        </div>
+        <script>
+        function cerrarModal() {
+          document.getElementById('modalNotas').style.display = 'none';
+        }
+        document.getElementById('modalNotas').style.display = 'block';
+        </script>
+        <?php
+  }
+
   $contratos = $wpdb->get_results(
     $wpdb->prepare("SELECT * FROM $tabla WHERE id_usuario = %d AND papelera = 0 ORDER BY fin ASC", $id_usuario)
   );
@@ -139,6 +179,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
           <th>Inicio</th>
           <th>Fin</th>
           <th>Acciones</th>
+          <th>Notas</th>
         </tr>
       </thead>
       <tbody>
@@ -232,6 +273,13 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'papelera' && !empty($_GET['id
                   <img src="<?php echo esc_url( content_url('plugins/thbr/assets/basura.png') ); ?>" alt="Papelera" style="width:20px;">
                 </a>
               </div>
+            </td>
+
+            <td>
+              <a href="<?php echo add_query_arg(['accion' => 'notas', 'id'=> $c->id]); ?>" title="Notas">
+                <img src="<?php echo esc_url( content_url('plugins/thbr/assets/notas.png') ); ?>"
+                  alt="Notas" style="width: 20px;">
+              </a>
             </td>
           </tr>
         <?php endforeach; ?>

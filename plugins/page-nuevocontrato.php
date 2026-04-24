@@ -305,10 +305,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <option>PORTO SEGURO</option>
       <option>MAPFRE</option>
       <option>SURA</option>
+      <option>ZURICH</option>
       <option>ANDA</option>
       <option>CGM</option>
       <option>DEPÓSITO EN BHU</option>
-      <option>PROPIEDAD</option>
+      <option>PROPIEDAD</option>      
     </select>
   </div>
 
